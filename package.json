@@ -1,0 +1,20 @@
+{
+    "name": "algopuni",
+    "version": "0.0.1",
+    "main": "index.js",
+    "author": "laggu <laggu91@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "commander": "^7.0.0"
+    },
+    "scripts": {
+        "build": "babel . --ignore 'node_modules,dist' -d dist",
+        "start": "babel-node index.js"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.12.10",
+        "@babel/core": "^7.12.10",
+        "@babel/node": "^7.12.10",
+        "@babel/preset-env": "^7.12.11"
+    }
+}
