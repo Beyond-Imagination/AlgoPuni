@@ -5,7 +5,9 @@
     "author": "laggu <laggu91@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "commander": "^7.0.0"
+        "commander": "^7.0.0",
+        "commander.js-error": "^1.1.0",
+        "jsonfile": "^6.1.0"
     },
     "scripts": {
         "build": "babel . --ignore 'node_modules,dist' -d dist",
