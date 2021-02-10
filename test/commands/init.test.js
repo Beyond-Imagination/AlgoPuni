@@ -4,10 +4,10 @@ import sinon from 'sinon'
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {DATAJSON, USERJSON} from '../../params';
-import {createRepository} from '../../utils/files/repository';
-import * as repository from '../../utils/files/repository';
-import init from'../../commands/init'
+import {DATAJSON, USERJSON} from '../../src/params';
+import {createRepository} from '../../src/utils/files/repository';
+import * as repository from '../../src/utils/files/repository';
+import init from'../../src/commands/init'
 
 let assert = chai.assert;
 

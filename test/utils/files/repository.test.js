@@ -3,8 +3,8 @@ import chai from 'chai';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {ALGOPUNIDIR} from '../../../params';
-import {createRepository, isRepository, findRepository} from '../../../utils/files/repository';
+import {ALGOPUNIDIR} from '../../../src/params';
+import {createRepository, isRepository, findRepository} from '../../../src/utils/files/repository';
 
 const repositoryDir = path.resolve("/","utils","files","repository","repo");
 const nonRepositoryDir = path.resolve("/","utils","files","repository","non-repo");

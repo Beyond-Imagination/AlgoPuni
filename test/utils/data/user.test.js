@@ -3,9 +3,9 @@ import chai from 'chai';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {DATAJSON, USERJSON} from '../../../params';
-import {createRepository} from '../../../utils/files/repository';
-import {createUserJSON, readUserJSON, writeUserJSON} from '../../../utils/data/user';
+import {DATAJSON, USERJSON} from '../../../src/params';
+import {createRepository} from '../../../src/utils/files/repository';
+import {createUserJSON, readUserJSON, writeUserJSON} from '../../../src/utils/data/user';
 
 const repositoryDir = path.resolve("/","utils","data","user","repo");
 const nonRepositoryDir = path.resolve("/","utils","data","user","non-repo");

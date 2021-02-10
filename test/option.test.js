@@ -1,7 +1,7 @@
 import chai from 'chai';
 import log from 'loglevel'
 
-import program from '../app'
+import program from '../src/app'
 
 let assert = chai.assert;
 

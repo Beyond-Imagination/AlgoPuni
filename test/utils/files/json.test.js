@@ -3,8 +3,8 @@ import chai from 'chai';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {DATAJSON, USERJSON} from '../../../params';
-import {readJSON, writeJSON} from '../../../utils/files/json';
+import {DATAJSON, USERJSON} from '../../../src/params';
+import {readJSON, writeJSON} from '../../../src/utils/files/json';
 
 const repositoryDir = path.resolve("/","utils","files","json","repo");
 const nonRepositoryDir = path.resolve("/","utils","files","json","non-repo");
