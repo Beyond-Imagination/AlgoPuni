@@ -5,8 +5,7 @@
     "author": "laggu <laggu91@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "commander": "^7.0.0",
-        "commander.js-error": "^1.1.0"
+        "commander": "^7.0.0"
     },
     "scripts": {
         "build": "babel . --ignore 'node_modules,dist' -d dist",
@@ -22,6 +21,7 @@
         "chai": "^4.2.0",
         "fs-monkey": "^1.0.1",
         "memfs": "^3.2.0",
-        "mocha": "^8.2.1"
+        "mocha": "^8.2.1",
+        "sinon": "^9.2.4"
     }
 }

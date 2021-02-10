@@ -28,3 +28,8 @@ export const createDataJSON = (repository=findRepository()) => {
     writeDataJSON(data, repository);
     return data;
 }
+
+export const addUser = (data, user, repository=findRepository()) => {
+    data.users[user.user_id] = user;
+    writeDataJSON(data, repository);
+}
