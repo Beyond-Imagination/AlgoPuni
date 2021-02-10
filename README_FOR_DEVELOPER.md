@@ -26,13 +26,19 @@ AlgoPuni 구현에 사용한 라이브러리
 * [mocha](https://mochajs.org/)
   * javascript testing 프레임워크
 * [chai](https://www.chaijs.com/)
-  * assertion 모듈
+  * assertion 패키지
 * [sinon](https://sinonjs.org/)
   * spy, mocking 프레임워크
 * [memfs](https://www.npmjs.com/package/memfs)
-  * in-memory 파일시스템 모듈
+  * in-memory 파일시스템 패키지
 * [fs-monkey](https://github.com/streamich/fs-monkey)
-  * 파일시스템 전용 monkey patch 모듈
+  * 파일시스템 전용 monkey patch 패키지
+* [loglevel](https://www.npmjs.com/package/loglevel)
+  * log 패키지
+
+## 디버깅
+AlgoPuni 프로젝트는 디버깅을 위한 hidden option 을 제공합니다.
+`--debug` 를 사용해 log level 을 조정할 수 있으며 debug level 의 log가 화면에 출력되게 됩니다. 효율적인 디버깅을 위해 필요한 곳에 로그를 많이 남겨주시기 바랍니다.
 
 ## 테스트
 package.json 에 정의된 `yarn test` 명령어를 이용해 test 를 실행할 수 있습니다.
