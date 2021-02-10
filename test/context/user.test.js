@@ -3,12 +3,12 @@ import chai from 'chai';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {DATAJSON, USERJSON} from '../../../src/params';
-import {createRepository} from '../../../src/utils/files/repository';
-import {User} from '../../../src/utils/data/user';
+import {DATAJSON, USERJSON} from '../../src/params';
+import {createRepository} from '../../src/utils/files/repository';
+import {User} from '../../src/context/user';
 
-const repositoryDir = path.resolve("/","utils","data","user","repo");
-const nonRepositoryDir = path.resolve("/","utils","data","user","non-repo");
+const repositoryDir = path.resolve("/","context","user","repo");
+const nonRepositoryDir = path.resolve("/","context","user","non-repo");
 
 let assert = chai.assert;
 
@@ -32,7 +32,7 @@ describe("user.json", () => {
 
     it("fail create", () => {
         const user = new User(nonRepositoryDir)
-        assert.throws(() => user.create(), `ENOENT: no such file or directory, open '/utils/data/user/non-repo/.algopuni/user.json'`);
+        assert.throws(() => user.create(), `ENOENT: no such file or directory, open '/context/user/non-repo/.algopuni/user.json'`);
     })
 
     it("success read", () => {
@@ -45,7 +45,7 @@ describe("user.json", () => {
 
     it("fail read", () => {
         const user = new User(nonRepositoryDir)
-        assert.throws(() => user.read(), `ENOENT: no such file or directory, open '/utils/data/user/non-repo/.algopuni/user.json'`)
+        assert.throws(() => user.read(), `ENOENT: no such file or directory, open '/context/user/non-repo/.algopuni/user.json'`)
     })
 
     it("success write", () => {
@@ -64,6 +64,6 @@ describe("user.json", () => {
         user.user_id = 'laggu';
         user.current_problem = 1;
         user.challenging = [1,2,3]
-        assert.throws(() => user.write(), `ENOENT: no such file or directory, open '/utils/data/user/non-repo/.algopuni/user.json'`)
+        assert.throws(() => user.write(), `ENOENT: no such file or directory, open '/context/user/non-repo/.algopuni/user.json'`)
     })
 })

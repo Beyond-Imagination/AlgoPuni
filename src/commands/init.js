@@ -1,19 +1,17 @@
 import { Command } from 'commander'
 
 import {createRepository} from '../utils/files/repository';
-import {Data} from '../utils/data/data';
-import {User} from '../utils/data/user';
+import {Context} from '../context';
 
 const init = new Command('init');
 init.description('init command description')
 init.action(()=>{
     try {
         createRepository();
-        const data = new Data('.');
-        const user = new User('.');
-        data.create();
-        user.create();
-        data.addUser(user)
+        const context = new Context('.');
+        context.data.create();
+        context.user.create();
+        context.addUser()
     } catch (error) {
         console.error(error.message)
     }
