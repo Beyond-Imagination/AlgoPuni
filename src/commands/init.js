@@ -1,17 +1,19 @@
 import { Command } from 'commander'
 
 import {createRepository} from '../utils/files/repository';
-import {createDataJSON, addUser} from '../utils/data/data';
-import {createUserJSON} from '../utils/data/user';
+import {Data} from '../utils/data/data';
+import {User} from '../utils/data/user';
 
 const init = new Command('init');
 init.description('init command description')
 init.action(()=>{
     try {
         createRepository();
-        const data = createDataJSON('.');
-        const user = createUserJSON('.');
-        addUser(data, user, '.')
+        const data = new Data('.');
+        const user = new User('.');
+        data.create();
+        user.create();
+        data.addUser(user)
     } catch (error) {
         console.error(error.message)
     }

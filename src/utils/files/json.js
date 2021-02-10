@@ -10,6 +10,14 @@ export const readJSON = (path) => {
 }
 
 export const writeJSON = (path, obj) => {
-    const jsonString = JSON.stringify(obj, null, 4)
+    const jsonString = JSON.stringify(obj, replacer, 4)
     fs.writeFileSync(path, jsonString)
+}
+
+const replacer = (key, value) => {
+    if(key === "repository") {
+        return undefined;
+    } else {
+        return value;
+    }
 }

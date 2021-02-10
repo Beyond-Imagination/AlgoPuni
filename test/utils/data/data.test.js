@@ -5,7 +5,7 @@ import {patchFs} from 'fs-monkey';
 
 import {DATAJSON, USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository';
-import {createDataJSON, readDataJSON, writeDataJSON} from '../../../src/utils/data/data';
+import {Data} from '../../../src/utils/data/data';
 
 const repositoryDir = path.resolve("/","utils","data","data","repo");
 const nonRepositoryDir = path.resolve("/","utils","data","data","non-repo");
@@ -21,62 +21,65 @@ describe("data.json", () => {
     })
 
     it("success create", () => {
-        const data = createDataJSON(repositoryDir);
+        const data = new Data(repositoryDir);
+        data.create();
         assert.isObject(data.users)
         assert.isArray(data.problems.challenging)
         assert.isArray(data.problems.archived)
-        assert.isArray(data.problems.this_week)
+        assert.isArray(data.problems.thisWeek)
         const isExist = fs.existsSync(path.resolve(repositoryDir, DATAJSON))
         assert.isTrue(isExist, "fail to create data json")
     })
 
     it("fail create", () => {
-        assert.throws(() => createDataJSON(), "no AlgoPuni repository found", "should fail finding repository");
+        const data = new Data(nonRepositoryDir);
+        assert.throws(() => data.create(), `ENOENT: no such file or directory, open '/utils/data/data/non-repo/.algopuni/data.json'`);
     })
 
     it("success read", () => {
-        const data = readDataJSON(repositoryDir);
+        const data = new Data(repositoryDir);
+        data.read();
         assert.isObject(data.users)
         assert.isArray(data.problems.challenging)
         assert.isArray(data.problems.archived)
-        assert.isArray(data.problems.this_week)
+        assert.isArray(data.problems.thisWeek)
     })
 
     it("fail read", () => {
-        assert.throws(() => readDataJSON(nonRepositoryDir), `ENOENT: no such file or directory, open '/utils/data/data/non-repo/.algopuni/data.json'`)
+        const data = new Data(nonRepositoryDir);
+        assert.throws(() => data.read(), `ENOENT: no such file or directory, open '/utils/data/data/non-repo/.algopuni/data.json'`)
     })
 
     it("success write", () => {
-        const data = {
-            users: {
-                laggu: {
-                    challenging: [1,2,3],
-                },
+        const data = new Data(repositoryDir);
+        data.users = {
+            laggu: {
+                challenging: [1,2,3],
             },
-            problems: {
-                challenging: [11,12,13],
-                archived: [21,22,23],
-                this_week: [31,32,33],
-            },
+        };
+        data.problems = {
+            challenging: [11,12,13],
+            archived: [21,22,23],
+            thisWeek: [31,32,33],
         }
-        writeDataJSON(data, repositoryDir);
+        data.write();
         const result = JSON.parse(fs.readFileSync(path.resolve(repositoryDir, DATAJSON)))
+        delete data.repository
         assert.deepEqual(result, data)
     })
 
     it("fail write", () => {
-        const data = {
-            users: {
-                laggu: {
-                    challenging: [1,2,3],
-                },
+        const data = new Data(nonRepositoryDir);
+        data.users = {
+            laggu: {
+                challenging: [1,2,3],
             },
-            problems: {
-                challenging: [11,12,13],
-                archived: [21,22,23],
-                this_week: [31,32,33],
-            },
+        };
+        data.problems = {
+            challenging: [11,12,13],
+            archived: [21,22,23],
+            thisWeek: [31,32,33],
         }
-        assert.throws(() => writeDataJSON(data, nonRepositoryDir), `ENOENT: no such file or directory, open '/utils/data/data/non-repo/.algopuni/data.json'`)
+        assert.throws(() => data.write(), `ENOENT: no such file or directory, open '/utils/data/data/non-repo/.algopuni/data.json'`)
     })
 })

@@ -38,16 +38,16 @@ describe("command init", () => {
         init.parse(['node', 'test', 'init']);
 
         const user = JSON.parse(fs.readFileSync(path.resolve(nonRepositoryDir, USERJSON)))
-        assert.isString(user.user_id)
-        assert.isNumber(user.current_problem)
+        assert.isString(user.userID)
+        assert.isNumber(user.currentProblem)
         assert.isArray(user.challenging)
 
         const data = JSON.parse(fs.readFileSync(path.resolve(nonRepositoryDir, DATAJSON)))
         assert.isObject(data.users)
         assert.isArray(data.problems.challenging)
         assert.isArray(data.problems.archived)
-        assert.isArray(data.problems.this_week)
-        assert.deepEqual(data.users[user.user_id], user)
+        assert.isArray(data.problems.thisWeek)
+        assert.deepEqual(data.users[user.userID], user)
     })
 
     it("fail init", () => {
