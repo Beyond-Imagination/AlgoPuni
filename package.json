@@ -1,6 +1,6 @@
 {
     "name": "algopuni",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "main": "index.js",
     "author": "laggu <laggu91@gmail.com>",
     "license": "MIT",
@@ -23,7 +23,9 @@
         "chai": "^4.2.0",
         "fs-monkey": "^1.0.1",
         "memfs": "^3.2.0",
-        "mocha": "^8.2.1",
-        "sinon": "^9.2.4"
+        "mocha": "^8.2.1"
+    },
+    "bin": {
+        "algopuni": "dist/index.js"
     }
 }
