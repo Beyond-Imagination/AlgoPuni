@@ -1,18 +1,22 @@
 import path from 'path';
 import chai from 'chai';
-import {fs} from 'memfs';
+import {vol, fs} from 'memfs';
+import {patchFs} from 'fs-monkey';
 
 import {DATAJSON, USERJSON} from '../../../params';
 import {createRepository} from '../../../utils/files/repository';
 import {createDataJSON, readDataJSON, writeDataJSON} from '../../../utils/data/data';
-import {UtilsDataDataTestDir} from "../../setup.test";
 
-const {repositoryDir, nonRepositoryDir} = UtilsDataDataTestDir;
+const repositoryDir = path.resolve("/","utils","data","data","repo");
+const nonRepositoryDir = path.resolve("/","utils","data","data","non-repo");
 
 let assert = chai.assert;
 
 describe("data.json", () => {
     before(() => {
+        vol.mkdirSync(repositoryDir, {recursive: true})
+        vol.mkdirSync(nonRepositoryDir, {recursive: true})
+        patchFs(vol);
         createRepository(repositoryDir);
     })
 

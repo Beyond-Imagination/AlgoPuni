@@ -1,16 +1,23 @@
 import path from 'path';
 import chai from 'chai';
-import {fs} from 'memfs';
+import {vol, fs} from 'memfs';
+import {patchFs} from 'fs-monkey';
 
 import {ALGOPUNIDIR} from '../../../params';
 import {createRepository, isRepository, findRepository} from '../../../utils/files/repository';
-import {UtilsFilesRepositoryTestDir} from "../../setup.test";
 
-const {repositoryDir, nonRepositoryDir} = UtilsFilesRepositoryTestDir;
+const repositoryDir = path.resolve("/","utils","files","repository","repo");
+const nonRepositoryDir = path.resolve("/","utils","files","repository","non-repo");
 
 let assert = chai.assert;
 
 describe("Repository", () => {
+    before(() => {
+        vol.mkdirSync(repositoryDir, {recursive: true})
+        vol.mkdirSync(nonRepositoryDir, {recursive: true})
+        patchFs(vol);
+    })
+
     it("CreateRepository", () => {
         createRepository(repositoryDir);
         let isExist = fs.existsSync(path.resolve(repositoryDir, ALGOPUNIDIR))

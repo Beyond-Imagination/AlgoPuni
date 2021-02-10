@@ -1,17 +1,24 @@
 import path from 'path';
 import chai from 'chai';
-import {fs} from 'memfs';
+import {vol, fs} from 'memfs';
+import {patchFs} from 'fs-monkey';
 
 import {DATAJSON, USERJSON} from '../../../params';
 import {readJSON, writeJSON} from '../../../utils/files/json';
-import {UtilsFilesJSONTestDir} from "../../setup.test";
 
-const {repositoryDir, nonRepositoryDir} = UtilsFilesJSONTestDir;
+const repositoryDir = path.resolve("/","utils","files","json","repo");
+const nonRepositoryDir = path.resolve("/","utils","files","json","non-repo");
 
 let assert = chai.assert;
 
 describe("JSON", () => {
     const TESTJSON = path.resolve(repositoryDir, 'test.json')
+
+    before(() => {
+        vol.mkdirSync(repositoryDir, {recursive: true})
+        vol.mkdirSync(nonRepositoryDir, {recursive: true})
+        patchFs(vol);
+    })
 
     it("success write", () => {
         let obj = {
