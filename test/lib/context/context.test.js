@@ -1,6 +1,6 @@
 import chai from 'chai';
 
-import {Context} from '../../src/context';
+import {Context} from '../../../src/lib/context';
 
 let assert = chai.assert;
 

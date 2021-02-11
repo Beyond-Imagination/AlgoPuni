@@ -1,6 +1,8 @@
 import {Data} from './data';
 import {User} from './user';
 
+import {findRepository} from '../../utils/files/repository'
+
 export default class Context {
     constructor(repository=findRepository()) {
         this.repository = repository;

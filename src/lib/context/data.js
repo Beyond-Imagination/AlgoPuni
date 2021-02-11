@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-import {DATAJSON} from '../params';
-import {findRepository} from '../utils/files/repository';
-import {readJSON, writeJSON} from '../utils/files/json';
+import {DATAJSON} from '../../params';
+import {findRepository} from '../../utils/files/repository';
+import {readJSON, writeJSON} from '../../utils/files/json';
 
 export class Data {
     constructor(repository=findRepository()) {

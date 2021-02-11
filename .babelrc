@@ -1,5 +1,5 @@
 {
-    "presets": ["@babel/preset-env"],
+    "presets": [["@babel/preset-env", {"targets": {"chrome": "55"}}]],
     "ignore": [
         "*/node_modules",
         "*/dist",

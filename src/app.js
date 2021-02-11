@@ -1,10 +1,8 @@
 import { Command, Option } from 'commander'
-import log from 'loglevel'
+import log from './utils/log'
 
 import { VERSION } from './params'
 import init from'./commands/init'
-
-log.setLevel("info")
 
 const program = new Command();
 program.version(VERSION);

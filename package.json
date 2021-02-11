@@ -21,6 +21,7 @@
         "@babel/preset-env": "^7.12.11",
         "@babel/register": "^7.12.10",
         "chai": "^4.2.0",
+        "faker": "^5.4.0",
         "fs-monkey": "^1.0.1",
         "memfs": "^3.2.0",
         "mocha": "^8.2.1",

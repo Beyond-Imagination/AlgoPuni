@@ -35,6 +35,8 @@ AlgoPuni 구현에 사용한 라이브러리
   * 파일시스템 전용 monkey patch 패키지
 * [loglevel](https://www.npmjs.com/package/loglevel)
   * log 패키지
+* [faker](https://www.npmjs.com/package/faker)
+  * test 용 fake data 패키지
 
 ## 디버깅
 AlgoPuni 프로젝트는 디버깅을 위한 hidden option 을 제공합니다.

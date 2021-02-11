@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 
 import {createRepository} from '../utils/files/repository';
-import {Context} from '../context';
+import {Context} from '../lib/context';
 
 const init = new Command('init');
 init.description('init command description')

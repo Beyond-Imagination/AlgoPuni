@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-import {USERJSON} from '../params';
-import {findRepository} from '../utils/files/repository';
-import {readJSON, writeJSON} from '../utils/files/json';
+import {USERJSON} from '../../params';
+import {findRepository} from '../../utils/files/repository';
+import {readJSON, writeJSON} from '../../utils/files/json';
 
 export class User {
     constructor(repository=findRepository()) {
