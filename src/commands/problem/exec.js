@@ -9,10 +9,9 @@ exec.description('problem exec description');
 exec.action(async () => {
     try {
         const context = new Context();
-        context.data.read();
-        context.user.read();
+        context.read();
+        
         const executor = new Executor(context);
-
         await executor.exec();
     } catch(err) {
         log.error(err.message)

@@ -8,10 +8,14 @@ import {readJSON, writeJSON} from '../../utils/files/json';
 export class User {
     constructor(repository=findRepository()) {
         this.repository = repository;
+        this.path = path.resolve(this.repository, USERJSON);
+        this.userID = "";
+        this.currentProblem = 0;
+        this.challenging = [];
     }
 
     create() {
-        if (fs.existsSync(path.resolve(this.repository, USERJSON))) {
+        if (fs.existsSync(this.path)) {
             return;
         }
         this.askUserInfo();
@@ -22,16 +26,22 @@ export class User {
         let id = "name" // TODO get user id from prompt
         
         this.userID = id;
-        this.currentProblem = 0;
-        this.challenging = [];
     }
 
     read() {
-        const user = readJSON(path.resolve(this.repository, USERJSON));
+        const user = readJSON(this.path);
         Object.assign(this, user);
     }
 
     write() {
-        writeJSON(path.resolve(this.repository, USERJSON), this);
+        writeJSON(this.path, this.toJSON());
+    }
+
+    toJSON() {
+        return {
+            userID: this.userID,
+            currentProblem: this.currentProblem,
+            challenging: this.challenging,
+        }
     }
 }

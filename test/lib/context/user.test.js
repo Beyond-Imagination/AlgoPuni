@@ -23,6 +23,8 @@ describe("user.json", () => {
     it("success create", () => {
         const user = new User(repositoryDir);
         user.create();
+        assert.equal(repositoryDir, user.repository)
+        assert.equal(path.resolve(repositoryDir, USERJSON), user.path)
         assert.isString(user.userID, "user json should include string type of userID")
         assert.equal(user.currentProblem, 0, "user json should include 0 value of currentProblem")
         assert.isArray(user.challenging, "user json should include array type of challenging")
@@ -55,8 +57,7 @@ describe("user.json", () => {
         user.challenging = [1,2,3]
         user.write();
         const result = JSON.parse(fs.readFileSync(path.resolve(repositoryDir, USERJSON)))
-        delete user.repository
-        assert.deepEqual(result, user)
+        assert.deepEqual(result, user.toJSON())
     })
 
     it("fail write", () => {

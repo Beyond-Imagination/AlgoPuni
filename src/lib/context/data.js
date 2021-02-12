@@ -8,33 +8,51 @@ import {readJSON, writeJSON} from '../../utils/files/json';
 export class Data {
     constructor(repository=findRepository()) {
         this.repository = repository;
-    }
-
-    create() {
-        if (fs.existsSync(path.resolve(this.repository, DATAJSON))) {
-            return;
-        }
+        this.path = path.resolve(this.repository, DATAJSON)
         this.users = {};
         this.problems = {
             challenging: [],
             archived: [],
             thisWeek: []
         };
+    }
+
+    create() {
+        if (fs.existsSync(this.path)) {
+            return;
+        }
         this.write();
-        return this;
     }
 
     read() {
-        const data = readJSON(path.resolve(this.repository, DATAJSON));
+        const data = readJSON(this.path);
         Object.assign(this, data);
     }
 
     write() {
-        writeJSON(path.resolve(this.repository, DATAJSON), this);
+        writeJSON(this.path, this.toJSON());
     }
 
     addUser(user) {
-        this.users[user.userID] = user;
-        this.write();
+        if (!this.users[user.userID]){
+            this.setUser(user);
+            this.write();
+        } else {
+            throw new Error("already exist user id")
+        }
+    }
+
+    setUser(user) {
+        this.users[user.userID] = {
+            userID: user.userID,
+            challenging: user.challenging,
+        };
+    }
+
+    toJSON() {
+        return {
+            users: this.users,
+            problems: this.problems,
+        }
     }
 }

@@ -7,11 +7,8 @@ const init = new Command('init');
 init.description('init command description')
 init.action(()=>{
     try {
-        createRepository();
         const context = new Context('.');
-        context.data.create();
-        context.user.create();
-        context.addUser()
+        context.create();
     } catch (error) {
         console.error(error.message)
     }

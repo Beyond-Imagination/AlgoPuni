@@ -23,6 +23,8 @@ describe("data.json", () => {
     it("success create", () => {
         const data = new Data(repositoryDir);
         data.create();
+        assert.equal(repositoryDir, data.repository)
+        assert.equal(path.resolve(repositoryDir, DATAJSON), data.path)
         assert.isObject(data.users)
         assert.isArray(data.problems.challenging)
         assert.isArray(data.problems.archived)
@@ -64,8 +66,7 @@ describe("data.json", () => {
         }
         data.write();
         const result = JSON.parse(fs.readFileSync(path.resolve(repositoryDir, DATAJSON)))
-        delete data.repository
-        assert.deepEqual(result, data)
+        assert.deepEqual(result, data.toJSON())
     })
 
     it("fail write", () => {

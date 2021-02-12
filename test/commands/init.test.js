@@ -43,11 +43,12 @@ describe("command init", () => {
         assert.isArray(user.challenging)
 
         const data = JSON.parse(fs.readFileSync(path.resolve(nonRepositoryDir, DATAJSON)))
-        assert.isObject(data.users)
-        assert.isArray(data.problems.challenging)
-        assert.isArray(data.problems.archived)
-        assert.isArray(data.problems.thisWeek)
-        assert.deepEqual(data.users[user.userID], user)
+        assert.isObject(data.users);
+        assert.isArray(data.problems.challenging);
+        assert.isArray(data.problems.archived);
+        assert.isArray(data.problems.thisWeek);
+        assert.deepEqual(data.users[user.userID].userID, user.userID);
+        assert.deepEqual(data.users[user.userID].challenging, user.challenging);
     })
 
     it("fail init", () => {
