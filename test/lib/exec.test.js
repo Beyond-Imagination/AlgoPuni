@@ -4,33 +4,18 @@ import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 
-import {PROBLEM, SOLUTION} from '../../src/params';
+import {PROBLEMDIR, SOLUTION, TESTCASESJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Executor from '../../src/lib/executor';
 import {Context} from '../../src/lib/context';
+import {solutionString, casesString} from './sample.code'
 
 const userID = faker.name.firstName();
 const currentProblem = faker.random.number();
 
 const repositoryDir = path.resolve("/","lib","exec","repo");
 const nonRepositoryDir = path.resolve("/","lib","exec","non-repo");
-const problemDir = path.resolve(repositoryDir, PROBLEM, `${currentProblem}`);
-
-const solutionString = `function solution(x, y){
-    return x+y;
-}
-`
-
-const casesString = `{
-    "inputs": ["x", "y"],
-	"cases": [
-		{
-			"x": 1,
-            "y": 2,
-            "_result": 3
-		}
-	]
-}`
+const problemDir = path.resolve(repositoryDir, PROBLEMDIR, `${currentProblem}`);
 
 const context = new Context(repositoryDir);
 context.user.userID = userID;
@@ -45,7 +30,7 @@ describe("executor", () => {
         vol.mkdirSync(problemDir, {recursive: true})
         patchFs(vol);
         fs.writeFileSync(path.resolve(problemDir, `${context.user.userID}.js`), solutionString)
-        fs.writeFileSync(path.resolve(problemDir, "cases.json"), casesString)
+        fs.writeFileSync(path.resolve(problemDir, TESTCASESJSON), casesString)
         createRepository(repositoryDir)
     })
 
@@ -77,13 +62,6 @@ describe("executor", () => {
     //     const solution = await executor.getSolution();
     // })
 
-    it("get testset", () => {
-        const executor = new Executor(context);
-        const testset = executor.getTestSet();
-        const cases = fs.readFileSync(path.resolve(problemDir, "cases.json"))
-        assert.equal(cases, casesString)
-    })
-
     it("delete solution", () => {
         const executor = new Executor(context);
         executor.copySolution();
@@ -96,14 +74,14 @@ describe("executor", () => {
 
     it("success marking", () => {
         const executor = new Executor(context);
-        const testset = executor.getTestSet();
+        const testset = executor.problem.getTestCases();
         const solution = (x,y) => x+y;
         executor.marking(solution, testset);
     })
 
     it("fail marking", () => {
         const executor = new Executor(context);
-        const testset = executor.getTestSet();
+        const testset = executor.problem.getTestCases();
         const solution = (x,y) => x-y;
         assert.throw(() => executor.marking(solution, testset))
     })

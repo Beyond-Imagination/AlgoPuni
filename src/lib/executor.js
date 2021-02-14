@@ -2,16 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import log from '../utils/log'
 
-import {PROBLEM, SOLUTION} from '../params';
+import {PROBLEMDIR, SOLUTION} from '../params';
 import {readJSON} from '../utils/files/json';
+import Problem from './problem';
 
 export default class Executor {
     constructor(context) {
         this.context = context;
-        // TODO make problem lib.
-        this.problemPath = path.resolve(this.context.repository, PROBLEM, `${this.context.user.currentProblem}`); 
-        this.userCodePath = path.resolve(this.problemPath, `${this.context.user.userID}.js`)
-        this.casesPath = path.resolve(this.problemPath, "cases.json")
+        this.problem = new Problem(this.context.repository, this.context.user.currentProblem);
         this.solutionPath = path.resolve(this.context.repository, SOLUTION);
     }
 
@@ -19,13 +17,14 @@ export default class Executor {
         this.copySolution()
         this.setExecutable()
         const solution = await this.getSolution()
-        const testSet = this.getTestSet()
+        const testSet = this.problem.getTestCases()
         this.deleteSolution()
         this.marking(solution, testSet)
     }
 
     copySolution() {
-        fs.copyFileSync(this.userCodePath, this.solutionPath)
+        const userSolutionPath = this.problem.getUserSolutionPath(this.context.user.userID)
+        fs.copyFileSync(userSolutionPath, this.solutionPath)
     }
 
     setExecutable() {
@@ -35,10 +34,6 @@ export default class Executor {
     async getSolution() {
         const solution = await import(this.solutionPath);
         return solution.default;
-    }
-
-    getTestSet() {
-        return readJSON(this.casesPath);
     }
 
     deleteSolution() {
