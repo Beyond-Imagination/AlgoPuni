@@ -8,12 +8,14 @@ export const isRepository = (dir) => {
 }
 
 export const findRepository = (dir = process.cwd()) => {
+    const rootDir = path.parse(process.cwd()).root;
+
     while(true) {
         if (isRepository(dir)) {
             return dir;
         }
         
-        if (dir === "/") {
+        if(rootDir === dir){
             throw new Error('no AlgoPuni repository found');
         } else {
             dir = path.resolve(dir, "..");
