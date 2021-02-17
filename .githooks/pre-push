@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# An example hook script to verify what is about to be pushed.  Called by "git
+# push" after it has checked the remote status, but before anything has been
+# pushed.  If this script exits with a non-zero status nothing will be pushed.
+#
+# This hook is called with the following parameters:
+#
+# $1 -- Name of the remote to which the push is being done
+# $2 -- URL to which the push is being done
+#
+# If pushing without using a named remote those arguments will be equal.
+#
+# Information about the commits which are being pushed is supplied as lines to
+# the standard input in the form:
+#
+#   <local ref> <local sha1> <remote ref> <remote sha1>
+#
+# This sample shows how to prevent push of commits where the log message starts
+# with "WIP" (work in progress).
+protected_branch='main'
+
+if read local_ref local_sha remote_ref remote_sha; then
+    if [[ "$remote_ref" == *"$protected_branch"* ]]; then
+        echo -en "\033[1;33mYou're about to push to main, is that what you intended? [y|n] \033[0m"
+        echo -en "\033[1m"
+        read -n 1 -r < /dev/tty
+        echo -en "\033[0m"
+
+        echo
+        if echo $REPLY | grep -E '^[Yy]$' > /dev/null; then
+            echo "confirmed to push to main"
+        else
+            exit 1 # push will not execute
+        fi
+    fi
+fi
+
+# check if test passes
+yarn test
+if [[ "$?" -ne "0" ]]; then
+  echo "test fail. please check test code"
+  exit 1
+fi
+
+exit 0

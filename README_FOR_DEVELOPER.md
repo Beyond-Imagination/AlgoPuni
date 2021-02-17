@@ -10,6 +10,15 @@ yarn install
 yarn start
 ```
 
+## git hooks
+AlgoPuni 개발중 잘못된 commit 의 추가를 막기 위해 git hook 을 사용합니다.
+현재 `pre-push` hook 을 통해 push branch 와 test code 통과여부를 파악합니다.
+개발에 사용하는 hook 은 .githooks 폴더에 있으며 이를 적용하기 위해 아래 명령어를 사용하여야 합니다.
+
+```shell
+git config core.hookspath .githooks
+```
+
 ## 필요 사항
 
 AlgoPuni 실행에 필요한 사항
