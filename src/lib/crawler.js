@@ -19,6 +19,7 @@ export default class Crawler {
             problem.description = await this.getDescription(page);
             problem.code = await this.getInitalCode(page);
             problem.testCases = await this.getTestCases(page);
+            // TODO get information of problem. (title, url)
         } catch(error) {
             throw new Error("fail to get problem information");
         } finally {

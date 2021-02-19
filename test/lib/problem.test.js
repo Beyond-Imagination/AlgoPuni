@@ -4,7 +4,7 @@ import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 
-import {PROBLEMDIR, INFOJSON, TESTCASESJSON, PROBLEMJS} from '../../src/params';
+import {PROBLEMDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Problem from '../../src/lib/problem';
 import {solutionString, casesString, infoString} from './sample.code';
@@ -30,10 +30,6 @@ describe("problem", () => {
         createRepository(repositoryDir)
     })
 
-    // it("save problem", () => {
-        
-    // })
-
     it("get info", () => {
         const problem = new Problem(repositoryDir, currentProblem);
         const info = problem.getInfo();
@@ -49,6 +45,12 @@ describe("problem", () => {
         assert.deepEqual(testCases, expected);
     })
 
+    it("get user solution path", () => {
+        const problem = new Problem(repositoryDir, currentProblem);
+        const userSolutionPath = problem.getUserSolutionPath(userID);
+        assert.equal(userSolutionPath, path.resolve(problemDir, `${userID}.js`))
+    })
+
     it("create user solution", () => {
         const problem = new Problem(repositoryDir, currentProblem);
         problem.createUserSolution(userID);
@@ -56,9 +58,36 @@ describe("problem", () => {
         assert.deepEqual(userSolution.toString(), solutionString);
     })
 
-    it("get user solution path", () => {
+    it("save problem", () => {
+        const caseLength = faker.random.number(5);
+        const problemInfo = {
+            description: faker.lorem.paragraphs(),
+            code: faker.lorem.paragraph(),
+            testCases: {
+                inputs: Array.from(Array(caseLength), () => faker.random.number(10000)),
+                outputs: Array.from(Array(caseLength), () => faker.random.number(10000)),
+            },
+        }
+
         const problem = new Problem(repositoryDir, currentProblem);
-        const userSolutionPath = problem.getUserSolutionPath(userID);
-        assert.equal(userSolutionPath, path.resolve(problemDir, `${userID}.js`))
+        problem.saveProblem(problemInfo);
+        assert.deepEqual(fs.readFileSync(path.resolve(problemDir, PROBLEMJS)).toString(), problemInfo.code);
+        assert.deepEqual(JSON.parse(fs.readFileSync(path.resolve(problemDir, TESTCASESJSON)).toString()), problemInfo.testCases);
+        assert.deepEqual(fs.readFileSync(path.resolve(problemDir, PROBLEMMD)).toString(), problemInfo.description);
+    })
+
+    it("fail save prblem", () => {
+        const caseLength = faker.random.number(5);
+        const problemInfo = {
+            description: faker.lorem.paragraphs(),
+            code: faker.lorem.paragraph(),
+            testCases: {
+                inputs: Array.from(Array(caseLength), () => faker.random.number(10000)),
+                outputs: Array.from(Array(caseLength), () => faker.random.number(10000)),
+            },
+        }
+
+        const problem = new Problem(nonRepositoryDir, currentProblem);
+        assert.throw(() => problem.saveProblem(problemInfo))
     })
 })

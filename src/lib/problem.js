@@ -2,7 +2,8 @@ import path from 'path';
 import fs from 'fs';
 
 import {PROBLEMDIR, PROBLEMJS, PROBLEMMD, INFOJSON, TESTCASESJSON} from '../params';
-import {readJSON} from '../utils/files/json';
+import {readJSON, writeJSON} from '../utils/files/json';
+import {isRepository} from '../utils/files/repository';
 
 export default class Problem {
     constructor(repository, problemNumber) {
@@ -12,7 +13,14 @@ export default class Problem {
     }
 
     saveProblem(problem) {
-        // TODO 크롤러를 통해 problem 정보를 얻어 낸후 object 로 만들어서 해당 함수 호출
+        if(!isRepository(this.repository)) {
+            throw new Error("not an algopuni repository")
+        }
+        fs.mkdirSync(this.problemPath, {recursive: true})
+        fs.writeFileSync(path.resolve(this.problemPath, PROBLEMMD), problem.description);
+        fs.writeFileSync(path.resolve(this.problemPath, PROBLEMJS), problem.code);
+        writeJSON(path.resolve(this.problemPath, TESTCASESJSON), problem.testCases);
+        // TODO save info.json
     }
 
     getInfo() {
