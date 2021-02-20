@@ -17,9 +17,9 @@ export default class Executor {
         this.copySolution()
         this.setExecutable()
         const solution = await this.getSolution()
-        const testSet = this.problem.getTestCases()
+        const testCases = this.problem.getTestCases()
         this.deleteSolution()
-        this.marking(solution, testSet)
+        this.marking(solution, testCases)
     }
 
     copySolution() {
@@ -40,17 +40,21 @@ export default class Executor {
         fs.unlinkSync(this.solutionPath);
     }
 
-    marking(solution, testSet) {
-        const inputs = testSet.inputs;
+    marking(solution, testCases) {
+        const inputs = testCases.inputs;
+        const outputs = testCases.outputs;
         const failCase = []
-        testSet.cases.forEach((testCase, index) => {
-            const input = inputs.map(x => testCase[x])
+
+        for(let i=0; i<inputs.length; i++){
+            let input = inputs[i]
+            let output = outputs[i]
             const result = solution(...input);
-            this.printResult(index+1, input, testCase._result, result)
-            if(testCase._result !== result) {
-                failCase.push(index+1);
+            if(output !== result) {
+                failCase.push(i+1);
             }
-        })
+            this.printResult(i+1, input, output, result)
+        }
+        
         if (failCase.length) {
             throw new Error(`테스트 실패. 다음 케이스를 확인하세요. case: ${failCase}`)
         }
