@@ -16,10 +16,10 @@ export default class Crawler {
             const page = await browser.newPage();
             await this.goToProblemPage(page);
             await this.login(page);
+            problem.info = await this.getInfo(page);
             problem.description = await this.getDescription(page);
             problem.code = await this.getInitalCode(page);
             problem.testCases = await this.getTestCases(page);
-            // TODO get information of problem. (title, url)
         } catch(error) {
             throw new Error("fail to get problem information");
         } finally {
@@ -52,6 +52,13 @@ export default class Crawler {
         await page.keyboard.type(this.programmers.password);
         await page.click("#btn-sign-in")
         await page.waitForTimeout(300);
+    }
+
+    async getInfo(page) {
+        let info = {}
+        info.title = await page.$eval("#tab > li", element => element.innerText);
+        info.url = this.problemLink;
+        return info;
     }
 
     async getDescription(page) {

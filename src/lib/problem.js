@@ -20,7 +20,7 @@ export default class Problem {
         fs.writeFileSync(path.resolve(this.problemPath, PROBLEMMD), problem.description);
         fs.writeFileSync(path.resolve(this.problemPath, PROBLEMJS), problem.code);
         writeJSON(path.resolve(this.problemPath, TESTCASESJSON), problem.testCases);
-        // TODO save info.json
+        writeJSON(path.resolve(this.problemPath, INFOJSON), problem.info);
     }
 
     getInfo() {

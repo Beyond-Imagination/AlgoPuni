@@ -67,12 +67,17 @@ describe("problem", () => {
                 inputs: Array.from(Array(caseLength), () => faker.random.number(10000)),
                 outputs: Array.from(Array(caseLength), () => faker.random.number(10000)),
             },
+            info: {
+                title: faker.lorem.words(),
+                url: faker.internet.url(),
+            }
         }
 
         const problem = new Problem(repositoryDir, currentProblem);
         problem.saveProblem(problemInfo);
         assert.deepEqual(fs.readFileSync(path.resolve(problemDir, PROBLEMJS)).toString(), problemInfo.code);
         assert.deepEqual(JSON.parse(fs.readFileSync(path.resolve(problemDir, TESTCASESJSON)).toString()), problemInfo.testCases);
+        assert.deepEqual(JSON.parse(fs.readFileSync(path.resolve(problemDir, INFOJSON)).toString()), problemInfo.info);
         assert.deepEqual(fs.readFileSync(path.resolve(problemDir, PROBLEMMD)).toString(), problemInfo.description);
     })
 
