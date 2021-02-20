@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 
-import {Context} from '../../lib/context';
+import Context from '../../lib/context';
 import Executor from '../../lib/executor';
 import log from '../../utils/log'
 

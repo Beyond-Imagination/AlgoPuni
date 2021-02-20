@@ -11,7 +11,6 @@ export class User {
         this.path = path.resolve(this.repository, USERJSON);
         this.userID = "";
         this.currentProblem = 0;
-        this.challenging = [];
     }
 
     create() {
@@ -41,7 +40,6 @@ export class User {
         return {
             userID: this.userID,
             currentProblem: this.currentProblem,
-            challenging: this.challenging,
         }
     }
 }

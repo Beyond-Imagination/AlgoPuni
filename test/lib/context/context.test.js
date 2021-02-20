@@ -6,7 +6,7 @@ import faker from 'faker';
 
 import {DATAJSON, USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository';
-import {Context} from '../../../src/lib/context';
+import Context from '../../../src/lib/context';
 
 const repositoryDir = path.resolve("/","lib","context","repo");
 const nonRepositoryDir = path.resolve("/","lib","context","non-repo");

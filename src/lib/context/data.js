@@ -35,18 +35,12 @@ export class Data {
 
     addUser(user) {
         if (!this.users[user.userID]){
-            this.setUser(user);
-            this.write();
+            this.users[user.userID] = {
+                challenging: this.problems.challenging,
+            };
         } else {
             throw new Error("already exist user id")
         }
-    }
-
-    setUser(user) {
-        this.users[user.userID] = {
-            userID: user.userID,
-            challenging: user.challenging,
-        };
     }
 
     toJSON() {

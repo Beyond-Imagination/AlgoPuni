@@ -7,7 +7,7 @@ import faker from 'faker';
 import {PROBLEMDIR, SOLUTION, TESTCASESJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Executor from '../../src/lib/executor';
-import {Context} from '../../src/lib/context';
+import Context from '../../src/lib/context';
 import {solutionString, casesString} from './sample.code'
 
 const userID = faker.name.firstName();

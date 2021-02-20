@@ -40,17 +40,6 @@ describe("JSON", () => {
         assert.throws(() => writeJSON(nonRepositoryDir, obj), "EISDIR: illegal operation on a directory, open '/utils/files/json/non-repo'")
     })
 
-    it("omit repository", () => {
-        let obj = {
-            repository: "this should be omitted",
-            a: "success",
-        }
-        writeJSON(TESTJSON, obj);
-        const file = JSON.parse(fs.readFileSync(TESTJSON))
-        delete obj.repository
-        assert.deepEqual(file, obj)
-    })
-
     it("success read", () => {
         const result = readJSON(TESTJSON);
         const file = JSON.parse(fs.readFileSync(TESTJSON))

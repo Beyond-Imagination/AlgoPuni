@@ -24,7 +24,6 @@ export default class Context {
 
     write() {
         this.user.write();
-        this.data.setUser(this.user);
         this.data.write();
     }
 }

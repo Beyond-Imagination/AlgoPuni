@@ -27,7 +27,6 @@ describe("user.json", () => {
         assert.equal(path.resolve(repositoryDir, USERJSON), user.path)
         assert.isString(user.userID, "user json should include string type of userID")
         assert.equal(user.currentProblem, 0, "user json should include 0 value of currentProblem")
-        assert.isArray(user.challenging, "user json should include array type of challenging")
         const isExist = fs.existsSync(path.resolve(repositoryDir, USERJSON))
         assert.isTrue(isExist, "fail to create user json")
     })
@@ -42,7 +41,6 @@ describe("user.json", () => {
         user.read();
         assert.isString(user.userID, "user json should include string type of userID")
         assert.isNumber(user.currentProblem, "user json should include number type of currentProblem")
-        assert.isArray(user.challenging, "user json should include array type of challenging")
     })
 
     it("fail read", () => {
