@@ -5,6 +5,7 @@ import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 
 import {DATAJSON, USERJSON} from '../../../src/params';
+import {GITIGNORE} from '../../../src/utils/files/gitignore';
 import {createRepository} from '../../../src/utils/files/repository';
 import Context from '../../../src/lib/context';
 
@@ -38,6 +39,8 @@ describe("context", () => {
         assert.isTrue(isExist, "fail to create data json")
         isExist = fs.existsSync(path.resolve(repositoryDir, USERJSON))
         assert.isTrue(isExist, "fail to create user json")
+        isExist = fs.existsSync(path.resolve(repositoryDir, GITIGNORE))
+        assert.isTrue(isExist, "fail to create gitignore")
     })
 
     it("fail create", () => {

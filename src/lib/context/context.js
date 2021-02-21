@@ -2,6 +2,7 @@ import {Data} from './data';
 import {User} from './user';
 
 import {createRepository, findRepository} from '../../utils/files/repository'
+import {createGitIgnore} from '../../utils/files/gitignore'
 
 export default class Context {
     constructor(repository=findRepository()) {
@@ -15,6 +16,7 @@ export default class Context {
         this.user.create(this.repository);
         this.data.addUser(this.user);
         this.data.create(this.repository);
+        createGitIgnore(this.repository);
     }
     
     read() {
