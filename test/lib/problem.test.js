@@ -4,7 +4,7 @@ import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 
-import {PROBLEMDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
+import {PROBLEMSDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Problem from '../../src/lib/problem';
 import {solutionString, casesString, infoString} from './sample.code';
@@ -12,9 +12,9 @@ import {solutionString, casesString, infoString} from './sample.code';
 const userID = faker.name.firstName();
 const currentProblem = faker.random.number();
 
-const repositoryDir = path.resolve("/","lib","problem","repo");
-const nonRepositoryDir = path.resolve("/","lib","problem","non-repo");
-const problemDir = path.resolve(repositoryDir, PROBLEMDIR, `${currentProblem}`);
+const repositoryDir = path.resolve("/","lib","problems","repo");
+const nonRepositoryDir = path.resolve("/","lib","problems","non-repo");
+const problemDir = path.resolve(repositoryDir, PROBLEMSDIR, `${currentProblem}`);
 
 let assert = chai.assert;
 

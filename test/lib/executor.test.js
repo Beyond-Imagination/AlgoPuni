@@ -4,7 +4,7 @@ import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 
-import {PROBLEMDIR, SOLUTION, TESTCASESJSON} from '../../src/params';
+import {PROBLEMSDIR, SOLUTION, TESTCASESJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Executor from '../../src/lib/executor';
 import Context from '../../src/lib/context';
@@ -15,7 +15,7 @@ const currentProblem = faker.random.number();
 
 const repositoryDir = path.resolve("/","lib","exec","repo");
 const nonRepositoryDir = path.resolve("/","lib","exec","non-repo");
-const problemDir = path.resolve(repositoryDir, PROBLEMDIR, `${currentProblem}`);
+const problemDir = path.resolve(repositoryDir, PROBLEMSDIR, `${currentProblem}`);
 
 const context = new Context(repositoryDir);
 context.user.userID = userID;

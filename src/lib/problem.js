@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 
-import {PROBLEMDIR, PROBLEMJS, PROBLEMMD, INFOJSON, TESTCASESJSON} from '../params';
+import log from '../utils/log';
+import {PROBLEMSDIR, PROBLEMJS, PROBLEMMD, INFOJSON, TESTCASESJSON} from '../params';
 import {readJSON, writeJSON} from '../utils/files/json';
 import {isRepository} from '../utils/files/repository';
 
@@ -9,7 +10,7 @@ export default class Problem {
     constructor(repository, problemNumber) {
         this.repository = repository;
         this.problemNumber = problemNumber;
-        this.problemPath = path.resolve(this.repository, PROBLEMDIR, `${this.problemNumber}`);
+        this.problemPath = path.resolve(this.repository, PROBLEMSDIR, `${this.problemNumber}`);
     }
 
     saveProblem(problem) {
@@ -39,5 +40,20 @@ export default class Problem {
 
     getUserSolutionPath(userID) {
         return path.resolve(this.problemPath, `${userID}.js`)
+    }
+
+    displayInfo(){
+        let problemInfo = this.getInfo();
+
+        log.info("********************");
+        log.info("*** Problem Info ***");
+        log.info("********************");
+        log.info("Problem Number : " + `${this.problemNumber}`);
+        log.info("Title          : " + `${problemInfo.title}`);
+        // log.info("Level          : " + `${problemInfo.level}`); // level is not supported
+        log.info("Deadline       : " + `${problemInfo.deadline}`);
+        log.info("Archived       : " + `${problemInfo.archived}`);
+
+        log.info("********************");
     }
 }
