@@ -63,7 +63,7 @@ describe("command user challenge", ()=>{
         const spy = sinon.spy(Problem.prototype, "displayInfo");
         needRestore.push(spy)
 
-        challenge.parse(['node', 'test', 'user', 'challenge']);
+        challenge.parse(['node', 'test']);
         assert.isTrue(spy.calledOnce);
     });
 });
