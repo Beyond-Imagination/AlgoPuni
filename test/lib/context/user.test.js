@@ -1,5 +1,6 @@
 import path from 'path';
 import chai from 'chai';
+import sinon from 'sinon';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
@@ -13,6 +14,8 @@ const nonRepositoryDir = path.resolve("/","lib","context","user","non-repo");
 let assert = chai.assert;
 
 describe("user.json", () => {
+    const needRestore = []
+
     before(() => {
         vol.mkdirSync(repositoryDir, {recursive: true})
         vol.mkdirSync(nonRepositoryDir, {recursive: true})
@@ -20,9 +23,19 @@ describe("user.json", () => {
         createRepository(repositoryDir);
     })
 
-    it("success create", () => {
+    afterEach(() => {
+        while(needRestore.length) {
+            let obj = needRestore.pop();
+            obj.restore();
+        }
+    })
+
+    it("success create", async () => {
         const user = new User(repositoryDir);
-        user.create();
+        const userStub = sinon.stub(user, 'askUserID').returns("user")
+        needRestore.push(userStub)
+
+        await user.create();
         assert.equal(repositoryDir, user.repository)
         assert.equal(path.resolve(repositoryDir, USERJSON), user.path)
         assert.isString(user.userID, "user json should include string type of userID")
@@ -31,9 +44,18 @@ describe("user.json", () => {
         assert.isTrue(isExist, "fail to create user json")
     })
 
-    it("fail create", () => {
+    it("fail create", async () => {
         const user = new User(nonRepositoryDir)
-        assert.throws(() => user.create());
+        const userStub = sinon.stub(user, 'askUserID').returns("user")
+        needRestore.push(userStub)
+
+        user.create()
+            .then(()=>{
+                throw new Error("test fail")
+            })
+            .catch((err)=>{
+                // test success. should throw err
+            })
     })
 
     it("success read", () => {

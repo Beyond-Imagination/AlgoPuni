@@ -1,30 +1,40 @@
 import fs from 'fs';
 import path from 'path';
+import prompts from 'prompts';
 
-import {USERJSON} from '../../params';
-import {findRepository} from '../../utils/files/repository';
-import {readJSON, writeJSON} from '../../utils/files/json';
+import { USERJSON } from '../../params';
+import { findRepository } from '../../utils/files/repository';
+import { readJSON, writeJSON } from '../../utils/files/json';
 
 export class User {
-    constructor(repository=findRepository()) {
+    constructor(repository = findRepository()) {
         this.repository = repository;
         this.path = path.resolve(this.repository, USERJSON);
         this.userID = "";
         this.currentProblem = 0;
     }
 
-    create() {
+    async create(userID) {
         if (fs.existsSync(this.path)) {
             return;
         }
-        this.askUserInfo();
+        if(!userID) {
+            this.userID = await this.askUserID();
+        } else {
+            this.userID = userID;
+        }
+
         this.write();
     }
 
-    askUserInfo () {
-        let id = "name" // TODO get user id from prompt
-        
-        this.userID = id;
+    async askUserID() {
+        const response = await prompts({
+            type: 'text',
+            name: 'value',
+            message: 'Input your ID'
+        });
+        this.userID = response.value;
+        return response.value;
     }
 
     read() {

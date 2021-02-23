@@ -5,10 +5,10 @@ import Context from '../lib/context';
 
 const init = new Command('init');
 init.description('init command description')
-init.action(()=>{
+init.action(async ()=>{
     try {
         const context = new Context('.');
-        context.create();
+        await context.create();
     } catch (error) {
         console.error(error.message)
     }

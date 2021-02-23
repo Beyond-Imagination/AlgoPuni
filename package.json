@@ -8,6 +8,7 @@
         "commander": "^7.0.0",
         "commander.js-error": "^1.1.0",
         "loglevel": "^1.7.1",
+        "prompts": "^2.4.0",
         "puppeteer": "^7.1.0"
     },
     "scripts": {
@@ -19,6 +20,7 @@
         "@babel/cli": "^7.12.10",
         "@babel/core": "^7.12.10",
         "@babel/node": "^7.12.10",
+        "@babel/plugin-proposal-throw-expressions": "^7.12.13",
         "@babel/preset-env": "^7.12.11",
         "@babel/register": "^7.12.10",
         "chai": "^4.2.0",

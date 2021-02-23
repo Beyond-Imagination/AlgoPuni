@@ -11,11 +11,11 @@ export default class Context {
         this.data = new Data(this.repository);
     }
 
-    create() {
+    async create() {
         createRepository(this.repository);
-        this.user.create(this.repository);
+        await this.user.create();
         this.data.addUser(this.user);
-        this.data.create(this.repository);
+        this.data.create();
         createGitIgnore(this.repository);
     }
     

@@ -1,4 +1,5 @@
 import chai from 'chai';
+import sinon from 'sinon';
 import path from 'path';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
@@ -19,10 +20,19 @@ const currentProblem = faker.random.number();
 const challenging = Array.from(Array(faker.random.number(5)), () => faker.random.number(10000))
 
 describe("context", () => {
+    const needRestore = []
+
     before(() => {
         vol.mkdirSync(repositoryDir, {recursive: true})
         vol.mkdirSync(nonRepositoryDir, {recursive: true})
         patchFs(vol);
+    })
+
+    afterEach(() => {
+        while(needRestore.length) {
+            let obj = needRestore.pop();
+            obj.restore();
+        }
     })
 
     it("constructor", () => {
@@ -32,9 +42,13 @@ describe("context", () => {
         assert.isObject(context.user);
     })
 
-    it("success create", () => {
+    it("success create", async () => {
         const context = new Context(repositoryDir);
-        context.create();
+        
+        const user = sinon.stub(context.user, 'askUserID').returns("user")
+        needRestore.push(user)
+
+        await context.create();
         let isExist = fs.existsSync(path.resolve(repositoryDir, DATAJSON))
         assert.isTrue(isExist, "fail to create data json")
         isExist = fs.existsSync(path.resolve(repositoryDir, USERJSON))
@@ -45,7 +59,16 @@ describe("context", () => {
 
     it("fail create", () => {
         const context = new Context(repositoryDir);
-        assert.throw(()=> context.create())
+        const user = sinon.stub(context.user, 'askUserID').returns("user")
+        needRestore.push(user)
+
+        context.create()
+            .then(()=>{
+                throw new Error("test fail")
+            })
+            .catch((err)=>{
+                // test success. should throw err
+            })
     })
 
     it("success write", () => {

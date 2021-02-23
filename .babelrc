@@ -1,5 +1,6 @@
 {
     "presets": [["@babel/preset-env", {"targets": {"chrome": "55"}}]],
+    "plugins": ["@babel/plugin-proposal-throw-expressions"],
     "ignore": [
         "*/node_modules",
         "*/dist",
