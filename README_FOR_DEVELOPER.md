@@ -46,6 +46,10 @@ AlgoPuni 구현에 사용한 라이브러리
   * log 패키지
 * [faker](https://www.npmjs.com/package/faker)
   * test 용 fake data 패키지
+* [puppeteer](https://github.com/puppeteer/puppeteer)
+  * crawling 을 위한 headless 브라우저 패키지
+* [prompts](https://www.npmjs.com/package/prompts)
+  * 유저 input 을 받기 위한 프롬프트 패키지
 
 ## 디버깅
 AlgoPuni 프로젝트는 디버깅을 위한 hidden option 을 제공합니다.
