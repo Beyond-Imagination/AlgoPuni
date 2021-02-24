@@ -56,4 +56,8 @@ export default class Problem {
 
         log.info("********************");
     }
+    
+    changeFileName(beforeName,afterName){
+            return fs.renameSync( beforeName,afterName);
+    }
 }

@@ -49,4 +49,12 @@ export class Data {
             problems: this.problems,
         }
     }
+    changeUserName(beforeID,afterID){
+        if(beforeID === afterID)    throw new Error("바꾸고자 하는 ID가 동일합니다.")
+        if(this.users[afterID]) throw new Error(afterID +" is already existed")
+        
+        this.users[afterID] = this.users[beforeID];
+        delete this.users[beforeID];
+        return;
+    }        
 }
