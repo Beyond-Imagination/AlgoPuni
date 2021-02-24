@@ -42,7 +42,7 @@ export default class Problem {
         return path.resolve(this.problemPath, `${userID}.js`)
     }
 
-    displayInfo(){
+    displayInfo() {
         let problemInfo = this.getInfo();
 
         log.info("********************");
@@ -53,11 +53,10 @@ export default class Problem {
         // log.info("Level          : " + `${problemInfo.level}`); // level is not supported
         log.info("Deadline       : " + `${problemInfo.deadline}`);
         log.info("Archived       : " + `${problemInfo.archived}`);
-
         log.info("********************");
     }
     
-    changeFileName(beforeName,afterName){
-            return fs.renameSync( beforeName,afterName);
+    changeFileName(beforeName, afterName) {
+        fs.renameSync(beforeName, afterName);
     }
 }

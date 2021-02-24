@@ -19,7 +19,6 @@ challenge.action(() => {
     } catch(err) {
         log.error(err.message);
     }
-    
 });
 
 export default challenge;

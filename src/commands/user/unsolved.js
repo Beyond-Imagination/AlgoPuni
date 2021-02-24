@@ -25,7 +25,6 @@ unsolved.action(() => {
     } catch (err) {
         log.error(err.message);
     }
-
 });
 
 export default unsolved;

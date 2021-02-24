@@ -15,5 +15,4 @@ program.addCommand(init);
 program.command('user', "user command description", { executableFile: './commands/user/index' })
 program.command('problem', "problem command description", { executableFile: './commands/problem/index' })
 
-
 export default program;
