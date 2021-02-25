@@ -4,7 +4,7 @@ import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 
-import {PROBLEMSDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
+import {PROBLEMSDIR, ARCHIVEDDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Problem from '../../src/lib/problem';
 import {solutionString, casesString, infoString} from './sample.code';
@@ -28,6 +28,15 @@ describe("problem", () => {
         fs.writeFileSync(path.resolve(problemDir, TESTCASESJSON), casesString)
         fs.writeFileSync(path.resolve(problemDir, INFOJSON), infoString)
         createRepository(repositoryDir)
+    })
+
+    it("get problem path", () => {
+        const problem = new Problem(repositoryDir, currentProblem);
+        let problemPath = problem.getProblemPath();
+        assert.equal(problemPath, path.resolve(repositoryDir, PROBLEMSDIR, `${currentProblem}`));
+        problem.isArchived = true;
+        problemPath = problem.getProblemPath();
+        assert.equal(problemPath, path.resolve(repositoryDir, PROBLEMSDIR, ARCHIVEDDIR, `${currentProblem}`));
     })
 
     it("get info", () => {
@@ -56,6 +65,12 @@ describe("problem", () => {
         problem.createUserSolution(userID);
         const userSolution = fs.readFileSync(path.resolve(problemDir, `${userID}.js`))
         assert.deepEqual(userSolution.toString(), solutionString);
+    })
+
+    it("is user solution exist", () => {
+        const problem = new Problem(repositoryDir, currentProblem);
+        assert.isTrue(problem.isUserSolutionExist(userID));
+        assert.isFalse(problem.isUserSolutionExist("not exist userID"));
     })
 
     it("save problem", () => {

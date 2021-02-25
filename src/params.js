@@ -4,6 +4,7 @@ export const DATAJSON = `${ALGOPUNIDIR}/data.json`;
 export const SOLUTION = `${ALGOPUNIDIR}/solution.js`;
 
 export const PROBLEMSDIR = 'problems';
+export const ARCHIVEDDIR = 'archived';
 export const INFOJSON = 'info.json';
 export const TESTCASESJSON = 'cases.json';
 export const PROBLEMJS = 'problem.js';
