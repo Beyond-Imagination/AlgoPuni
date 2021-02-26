@@ -15,6 +15,11 @@ unsolved.action(() => {
         // 2. /.algopuni/data.json 에서 해당 userID 의 challenging 을 알아냅니다.
         const challenging = context.data.users[id].challenging;
 
+        if(!challenging.length) {
+            log.info('모든 문제를 풀었습니다.');
+            return;
+        }
+
         for (let problemNumber of challenging) {
             // 3. challenging 문제들의 info.json 을 읽습니다.
             const problem = new Problem(context.repository, problemNumber);
