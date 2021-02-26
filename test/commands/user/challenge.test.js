@@ -5,10 +5,11 @@ import sinon from 'sinon';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {createRepository} from '../../../src/utils/files/repository'
-import Problem from '../../../src/lib/problem'
-import Context from '../../../src/lib/context'
-import challenge from'../../../src/commands/user/challenge'
+import {createRepository} from '../../../src/utils/files/repository';
+import {ErrorNoSelectedProblem} from '../../../src/utils/error';
+import Problem from '../../../src/lib/problem';
+import Context from '../../../src/lib/context';
+import challenge from'../../../src/commands/user/challenge';
 
 const repositoryDir = path.resolve("/","commands","user","challenge","repo");
 const nonRepositoryDir = path.resolve("/","commands","user","challenge","non-repo");
@@ -48,7 +49,7 @@ describe("command user challenge", ()=>{
 
         const context = new Context(repositoryDir);
         context.user.challenging = problemNumber;
-        context.write();        
+        context.write();
     });
     
     const needRestore = []
@@ -67,5 +68,20 @@ describe("command user challenge", ()=>{
 
         challenge.parse(['node', 'test']);
         assert.isTrue(spy.calledOnce);
+    });
+
+    it("success challenge with no selected challeging problem", ()=>{
+        const context = new Context(repositoryDir);
+        context.read();
+        context.user.challenging = 0;
+        context.write();
+
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir)
+        const exitStub = sinon.stub(process, 'exit');
+        const problemSpy = sinon.spy(Problem.prototype, "displayInfo");
+        needRestore.push(cwdStub, exitStub, problemSpy)
+
+        challenge.parse(['node', 'test']);
+        assert.isTrue(problemSpy.threw(ErrorNoSelectedProblem));
     });
 });
