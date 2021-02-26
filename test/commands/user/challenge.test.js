@@ -47,7 +47,7 @@ describe("command user challenge", ()=>{
         problem.saveProblem(problemInfo);
 
         const context = new Context(repositoryDir);
-        context.user.currentProblem = problemNumber;
+        context.user.challenging = problemNumber;
         context.write();        
     });
     

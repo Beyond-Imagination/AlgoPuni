@@ -21,7 +21,7 @@ update.action(async(newUserID) => {
         context.write();
 
         let problem = new Problem(context.repository,"");
-        for(const element of context.data.problems.challenging){
+        for(const element of context.data.problems.unsolved){
             problem.problemNumber = element;
             if(problem.isUserSolutionExist(beforeID)){
                 problem.changeUserSolutionName(beforeID,newUserID);

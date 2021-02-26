@@ -26,7 +26,7 @@ describe("data.json", () => {
         assert.equal(repositoryDir, data.repository)
         assert.equal(path.resolve(repositoryDir, DATAJSON), data.path)
         assert.isObject(data.users)
-        assert.isArray(data.problems.challenging)
+        assert.isArray(data.problems.unsolved)
         assert.isArray(data.problems.archived)
         assert.isArray(data.problems.thisWeek)
         const isExist = fs.existsSync(path.resolve(repositoryDir, DATAJSON))
@@ -42,7 +42,7 @@ describe("data.json", () => {
         const data = new Data(repositoryDir);
         data.read();
         assert.isObject(data.users)
-        assert.isArray(data.problems.challenging)
+        assert.isArray(data.problems.unsolved)
         assert.isArray(data.problems.archived)
         assert.isArray(data.problems.thisWeek)
     })
@@ -56,11 +56,11 @@ describe("data.json", () => {
         const data = new Data(repositoryDir);
         data.users = {
             laggu: {
-                challenging: [1,2,3],
+                unsolved: [1,2,3],
             },
         };
         data.problems = {
-            challenging: [11,12,13],
+            unsolved: [11,12,13],
             archived: [21,22,23],
             thisWeek: [31,32,33],
         }
@@ -73,11 +73,11 @@ describe("data.json", () => {
         const data = new Data(nonRepositoryDir);
         data.users = {
             laggu: {
-                challenging: [1,2,3],
+                unsolved: [1,2,3],
             },
         };
         data.problems = {
-            challenging: [11,12,13],
+            unsolved: [11,12,13],
             archived: [21,22,23],
             thisWeek: [31,32,33],
         }

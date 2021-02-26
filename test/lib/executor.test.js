@@ -19,7 +19,7 @@ const problemDir = path.resolve(repositoryDir, PROBLEMSDIR, `${currentProblem}`)
 
 const context = new Context(repositoryDir);
 context.user.userID = userID;
-context.user.currentProblem = currentProblem;
+context.user.challenging = currentProblem;
 
 let assert = chai.assert;
 

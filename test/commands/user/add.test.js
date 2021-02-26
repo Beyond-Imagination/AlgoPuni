@@ -85,13 +85,13 @@ describe("command user add", ()=>{
         const userID = faker.name.firstName();
 
         const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir2)
-        const exitSpy = sinon.spy(process, 'exit')
-        needRestore.push(cwdStub, exitSpy)
+        const exitStub = sinon.stub(process, 'exit')
+        needRestore.push(cwdStub, exitStub)
 
         const isExist = fs.existsSync(path.resolve(repositoryDir2, USERJSON))
         assert.isTrue(isExist);
 
         await add.parseAsync(['node', 'test', userID]);
-        exitSpy.calledOnceWith(ErrorExistUserID.code);
+        exitStub.calledOnceWith(ErrorExistUserID.code);
     });
 });

@@ -12,7 +12,7 @@ export default class Data {
         this.path = path.resolve(this.repository, DATAJSON)
         this.users = {};
         this.problems = {
-            challenging: [],
+            unsolved: [],
             archived: [],
             thisWeek: []
         };
@@ -37,7 +37,7 @@ export default class Data {
     addUser(user) {
         if (!this.users[user.userID]){
             this.users[user.userID] = {
-                challenging: this.problems.challenging,
+                unsolved: this.problems.unsolved,
             };
         } else {
             throw ErrorExistUserID;

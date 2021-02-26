@@ -12,7 +12,7 @@ challenge.action(() => {
         const context = new Context();
         context.read();
 
-        let problemNum = context.user.currentProblem;
+        let problemNum = context.user.challenging;
 
         const problem = new Problem(context.repository, problemNum);
         problem.displayInfo();

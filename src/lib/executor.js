@@ -9,7 +9,7 @@ import Problem from './problem';
 export default class Executor {
     constructor(context) {
         this.context = context;
-        this.problem = new Problem(this.context.repository, this.context.user.currentProblem);
+        this.problem = new Problem(this.context.repository, this.context.user.challenging);
         this.solutionPath = path.resolve(this.context.repository, SOLUTION);
     }
 

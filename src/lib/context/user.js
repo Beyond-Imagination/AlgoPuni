@@ -11,7 +11,7 @@ export default class User {
         this.repository = repository;
         this.path = path.resolve(this.repository, USERJSON);
         this.userID = "";
-        this.currentProblem = 0;
+        this.challenging = 0;
     }
 
     async create(userID) {
@@ -49,7 +49,7 @@ export default class User {
     toJSON() {
         return {
             userID: this.userID,
-            currentProblem: this.currentProblem,
+            challenging: this.challenging,
         }
     }
 }

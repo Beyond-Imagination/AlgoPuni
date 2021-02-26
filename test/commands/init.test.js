@@ -43,26 +43,26 @@ describe("command init", () => {
 
         const user = JSON.parse(fs.readFileSync(path.resolve(nonRepositoryDir, USERJSON)))
         assert.isString(user.userID)
-        assert.isNumber(user.currentProblem)
+        assert.isNumber(user.challenging)
 
         const data = JSON.parse(fs.readFileSync(path.resolve(nonRepositoryDir, DATAJSON)))
         assert.isObject(data.users);
-        assert.isArray(data.problems.challenging);
+        assert.isArray(data.problems.unsolved);
         assert.isArray(data.problems.archived);
         assert.isArray(data.problems.thisWeek);
-        assert.deepEqual(data.users[user.userID].challenging, data.problems.challenging);
+        assert.deepEqual(data.users[user.userID].unsolved, data.problems.unsolved);
     })
 
     it("fail init", async () => {
         const repositorySpy = sinon.spy(repository, "createRepository");
-        const exitSpy = sinon.spy(process, 'exit');
+        const exitStub = sinon.stub(process, 'exit');
         const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir);
-        needRestore.push(repositorySpy, exitSpy, cwdStub);
+        needRestore.push(repositorySpy, exitStub, cwdStub);
 
         await init.parseAsync(['node', 'test']);
 
         assert.isTrue(repositorySpy.calledOnce);
         assert.isTrue(repositorySpy.threw());
-        exitSpy.calledOnceWith(ErrorRepositoryExist.code);
+        exitStub.calledOnceWith(ErrorRepositoryExist.code);
     })
 })

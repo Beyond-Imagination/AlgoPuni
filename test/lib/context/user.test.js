@@ -39,7 +39,7 @@ describe("user.json", () => {
         assert.equal(repositoryDir, user.repository)
         assert.equal(path.resolve(repositoryDir, USERJSON), user.path)
         assert.isString(user.userID, "user json should include string type of userID")
-        assert.equal(user.currentProblem, 0, "user json should include 0 value of currentProblem")
+        assert.equal(user.challenging, 0, "user json should include 0 value of challenging")
         const isExist = fs.existsSync(path.resolve(repositoryDir, USERJSON))
         assert.isTrue(isExist, "fail to create user json")
     })
@@ -62,7 +62,7 @@ describe("user.json", () => {
         const user = new User(repositoryDir)
         user.read();
         assert.isString(user.userID, "user json should include string type of userID")
-        assert.isNumber(user.currentProblem, "user json should include number type of currentProblem")
+        assert.isNumber(user.challenging, "user json should include number type of challenging")
     })
 
     it("fail read", () => {
@@ -73,8 +73,7 @@ describe("user.json", () => {
     it("success write", () => {
         const user = new User(repositoryDir);
         user.userID = 'laggu';
-        user.currentProblem = 1;
-        user.challenging = [1,2,3]
+        user.challenging = 1;
         user.write();
         const result = JSON.parse(fs.readFileSync(path.resolve(repositoryDir, USERJSON)))
         assert.deepEqual(result, user.toJSON())
@@ -83,8 +82,7 @@ describe("user.json", () => {
     it("fail write", () => {
         const user = new User(nonRepositoryDir);
         user.user_id = 'laggu';
-        user.current_problem = 1;
-        user.challenging = [1,2,3]
+        user.challenging = 1;
         assert.throws(() => user.write())
     })
 })
