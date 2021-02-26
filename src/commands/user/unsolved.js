@@ -24,6 +24,7 @@ unsolved.action(() => {
         }
     } catch (err) {
         log.error(err.message);
+        process.exit(err.code);
     }
 });
 

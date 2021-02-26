@@ -1,10 +1,12 @@
-const puppeteer = require("puppeteer");
+import puppeteer from "puppeteer";
+
+import {ErrorNoProgrammersAccount, ErrorFailCrawlProblem} from '../utils/error';
 
 export default class Crawler {
     constructor(problemNumber, programmers) {
         this.problemLink = `https://programmers.co.kr/learn/courses/30/lessons/${problemNumber}?language=javascript`;
-        if(!programmers.email) {
-            throw new Error("no programmers account information");
+        if(!programmers.email || !programmers.password) {
+            throw ErrorNoProgrammersAccount;
         }
         this.programmers = programmers;
     }
@@ -21,7 +23,7 @@ export default class Crawler {
             problem.code = await this.getInitalCode(page);
             problem.testCases = await this.getTestCases(page);
         } catch(error) {
-            throw new Error("fail to get problem information");
+            throw ErrorFailCrawlProblem;
         } finally {
             await browser.close();
         }

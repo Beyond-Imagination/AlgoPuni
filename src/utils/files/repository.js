@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import {ALGOPUNIDIR} from '../../params';
+import {ErrorNoRepositoryFound, ErrorRepositoryExist} from '../error';
 
 export const isRepository = (dir) => {
     return fs.existsSync(path.resolve(dir, ALGOPUNIDIR))
@@ -16,7 +17,7 @@ export const findRepository = (dir = process.cwd()) => {
         }
         
         if(rootDir === dir){
-            throw new Error('no AlgoPuni repository found');
+            throw ErrorNoRepositoryFound;
         } else {
             dir = path.resolve(dir, "..");
         }
@@ -25,7 +26,7 @@ export const findRepository = (dir = process.cwd()) => {
 
 export const createRepository = (dir = process.cwd()) => {
     if(isRepository(dir)) {
-        throw new Error('current working directory is already an AlgoPuni repository');
+        throw ErrorRepositoryExist;
     }
 
     fs.mkdirSync(path.resolve(dir, ALGOPUNIDIR));

@@ -19,7 +19,8 @@ add.action(async (userID) => {
         context.user.create(userID);
         context.data.write();
     } catch (err) {
-        log.error(err.message)
+        log.error(err.message);
+        process.exit(err.code);
     }
 });
 

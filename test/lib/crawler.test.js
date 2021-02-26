@@ -2,6 +2,7 @@ import chai from 'chai';
 import faker from 'faker';
 
 import Crawler from '../../src/lib/crawler';
+import {ErrorNoProgrammersAccount} from '../../src/utils/error'
 
 let assert = chai.assert;
 
@@ -15,7 +16,9 @@ describe("crawler", () => {
 
     it("fail consturctor", () => {
         const problemNumber = faker.random.number();
-        assert.throw(()=>{let crawler = new Crawler(problemNumber, {})})
+        assert.throw(()=> new Crawler(problemNumber, {}), ErrorNoProgrammersAccount.message)
+        assert.throw(()=> new Crawler(problemNumber, {email: faker.internet.email()}), ErrorNoProgrammersAccount.message)
+        assert.throw(()=> new Crawler(problemNumber, {password: faker.internet.password()}), ErrorNoProgrammersAccount.message)
     })
 
     it("crawl", async function () {

@@ -18,6 +18,7 @@ challenge.action(() => {
         problem.displayInfo();
     } catch(err) {
         log.error(err.message);
+        process.exit(err.code);
     }
 });
 

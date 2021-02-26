@@ -11,6 +11,7 @@ init.action(async ()=>{
         await context.create();
     } catch (error) {
         log.error(error.message);
+        process.exit(err.code);
     }
 })
 

@@ -56,7 +56,7 @@ export default class Executor {
         }
         
         if (failCase.length) {
-            throw new Error(`테스트 실패. 다음 케이스를 확인하세요. case: ${failCase}`)
+            throw new Error(`테스트 실패. 다음 케이스를 확인하세요. case: ${failCase}`) // TODO do not throw error. just return boolean result
         }
         log.info(`========== Success All Test ==========`)
     }

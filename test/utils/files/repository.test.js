@@ -5,6 +5,7 @@ import {patchFs} from 'fs-monkey';
 
 import {ALGOPUNIDIR} from '../../../src/params';
 import {createRepository, isRepository, findRepository} from '../../../src/utils/files/repository';
+import {ErrorNoRepositoryFound, ErrorRepositoryExist} from '../../../src/utils/error';
 
 const repositoryDir = path.resolve("/","utils","files","repository","repo");
 const nonRepositoryDir = path.resolve("/","utils","files","repository","non-repo");
@@ -25,7 +26,7 @@ describe("Repository", () => {
     })
 
     it("Fail CreateRepository on Algopuni repository directory", () => {
-        assert.throws(() => createRepository(repositoryDir), "current working directory is already an AlgoPuni repository", "should fail creating respotiroy on Algopuni repository directory")
+        assert.throws(() => createRepository(repositoryDir), ErrorRepositoryExist.message, "should fail creating respotiroy on Algopuni repository directory")
     })
 
     it("IsRepository", () => {
@@ -49,6 +50,6 @@ describe("Repository", () => {
     })
 
     it("Fail FindRepository", () => {
-        assert.throws(() => findRepository(nonRepositoryDir), "no AlgoPuni repository found", "should fail finding repository");
+        assert.throws(() => findRepository(nonRepositoryDir), ErrorNoRepositoryFound.message, "should fail finding repository");
     })
 })

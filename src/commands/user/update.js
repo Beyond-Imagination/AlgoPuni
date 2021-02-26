@@ -35,6 +35,7 @@ update.action(async(newUserID) => {
         */
     } catch (err) {
         log.error(err.message);
+        process.exit(err.code);
     }
 });
 

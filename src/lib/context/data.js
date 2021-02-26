@@ -4,6 +4,7 @@ import path from 'path';
 import {DATAJSON} from '../../params';
 import {findRepository} from '../../utils/files/repository';
 import {readJSON, writeJSON} from '../../utils/files/json';
+import {ErrorExistUserID, ErrorSameUserIDAsBefore} from '../../utils/error';
 
 export class Data {
     constructor(repository=findRepository()) {
@@ -39,7 +40,7 @@ export class Data {
                 challenging: this.problems.challenging,
             };
         } else {
-            throw new Error("already exist user id")
+            throw ErrorExistUserID;
         }
     }
 
@@ -49,9 +50,10 @@ export class Data {
             problems: this.problems,
         }
     }
+    
     changeUserName(beforeID,afterID){
-        if(beforeID === afterID)    throw new Error("바꾸고자 하는 ID가 동일합니다.")
-        if(this.users[afterID]) throw new Error(afterID +" is already existed")
+        if(beforeID === afterID)    throw ErrorSameUserIDAsBefore;
+        if(this.users[afterID])     throw ErrorExistUserID;
         
         this.users[afterID] = this.users[beforeID];
         delete this.users[beforeID];

@@ -7,6 +7,7 @@ import {patchFs} from 'fs-monkey';
 
 import {USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository'
+import {ErrorExistUserID} from '../../../src/utils/error';
 import Context from '../../../src/lib/context'
 import {Data} from '../../../src/lib/context/data'
 import {User} from '../../../src/lib/context/user'
@@ -78,5 +79,19 @@ describe("command user add", ()=>{
 
         assert.equal(userID, context.user.userID);
         assert.isObject(context.data.users[userID]);
+    });
+
+    it("fail add with same id", async ()=>{
+        const userID = faker.name.firstName();
+
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir2)
+        const exitSpy = sinon.spy(process, 'exit')
+        needRestore.push(cwdStub, exitSpy)
+
+        const isExist = fs.existsSync(path.resolve(repositoryDir2, USERJSON))
+        assert.isTrue(isExist);
+
+        await add.parseAsync(['node', 'test', userID]);
+        exitSpy.calledOnceWith(ErrorExistUserID.code);
     });
 });

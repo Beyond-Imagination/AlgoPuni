@@ -9,6 +9,7 @@ import {createRepository} from '../../src/utils/files/repository';
 import * as repository from '../../src/utils/files/repository';
 import {User} from '../../src/lib/context/user';
 import init from'../../src/commands/init';
+import {ErrorRepositoryExist} from '../../src/utils/error';
 
 let assert = chai.assert;
 
@@ -53,13 +54,15 @@ describe("command init", () => {
     })
 
     it("fail init", async () => {
-        const spy = sinon.spy(repository, "createRepository");
-        const cwd = sinon.stub(process, 'cwd').returns(repositoryDir)
-        needRestore.push(spy, cwd)
+        const repositorySpy = sinon.spy(repository, "createRepository");
+        const exitSpy = sinon.spy(process, 'exit');
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir);
+        needRestore.push(repositorySpy, exitSpy, cwdStub);
 
         await init.parseAsync(['node', 'test']);
 
-        assert.isTrue(spy.calledOnce);
-        assert.isTrue(spy.threw());
+        assert.isTrue(repositorySpy.calledOnce);
+        assert.isTrue(repositorySpy.threw());
+        exitSpy.calledOnceWith(ErrorRepositoryExist.code);
     })
 })

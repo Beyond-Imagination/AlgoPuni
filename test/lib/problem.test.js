@@ -6,6 +6,7 @@ import faker from 'faker';
 
 import {PROBLEMSDIR, ARCHIVEDDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
+import {ErrorNoRepositoryFound} from '../../src/utils/error';
 import Problem from '../../src/lib/problem';
 import {solutionString, casesString, infoString} from './sample.code';
 
@@ -108,6 +109,6 @@ describe("problem", () => {
         }
 
         const problem = new Problem(nonRepositoryDir, currentProblem);
-        assert.throw(() => problem.saveProblem(problemInfo))
+        assert.throw(() => problem.saveProblem(problemInfo), ErrorNoRepositoryFound.message)
     })
 })
