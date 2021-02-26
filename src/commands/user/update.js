@@ -2,7 +2,6 @@ import { Command } from 'commander';
 import Context from '../../lib/context';
 import Problem from '../../lib/problem';
 import log from '../../utils/log'
-import fs from 'fs';
 
 const update = new Command('update');
 update.arguments('[newUserID]')
@@ -21,18 +20,21 @@ update.action(async(newUserID) => {
         context.data.changeUserName(beforeID,newUserID);
         context.write();
 
-        for(const problemNumber in context.data.problems.challenging){
-            let problem = new Problem(context.repository,problemNumber);
-            if(fs.existsSync(problem.getUserSolutionPath(beforeID))){
-                problem.changeFileName(problem.getUserSolutionPath(beforeID),problem.getUserSolutionPath(newUserID));
+        let problem = new Problem(context.repository,"");
+        for(const element of context.data.problems.challenging){
+            problem.problemNumber = element;
+            if(problem.isUserSolutionExist(beforeID)){
+                problem.changeUserSolutionName(beforeID,newUserID);
             }
         }
-        /* archive 폴더 접근 관련하여 잠시 보류
-        for(const problemNumber in context.data.problems.archived){
-            let problem = new Problem("",problemNumber);
-            problem.changeFileName(problem.getUserSolutionPath(beforeID),problem.getUserSolutionPath(newUserID));
-        }
-        */
+
+        let problemArchived = new Problem(context.repository,"",true);
+        for(const element of context.data.problems.archived){
+            problemArchived.problemNumber = element;
+            if(problemArchived.isUserSolutionExist(beforeID)){
+                problemArchived.changeUserSolutionName(beforeID,newUserID);
+            }
+        }        
     } catch (err) {
         log.error(err.message);
         process.exit(err.code);

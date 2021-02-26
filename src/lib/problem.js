@@ -70,7 +70,10 @@ export default class Problem {
         log.info("********************");
     }
     
-    changeFileName(beforeName, afterName) {
-        fs.renameSync(beforeName, afterName);
+    changeFileName(beforePath, afterPath) {
+        fs.renameSync(beforePath, afterPath);
+    }
+    changeUserSolutionName(beforeID,newUserID){
+        this.changeFileName(this.getUserSolutionPath(beforeID),this.getUserSolutionPath(newUserID));
     }
 }
