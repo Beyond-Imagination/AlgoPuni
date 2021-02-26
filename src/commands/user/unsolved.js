@@ -4,7 +4,7 @@ import Problem from '../../lib/problem'
 import log from '../../utils/log';
 
 const unsolved = new Command('unsolved');
-unsolved.description('shows the unsolved problems that user has not yet solved');
+unsolved.description('사용자가 풀지 않은 문제의 정보를 출력합니다.');
 unsolved.action(() => {
     try {
         const context = new Context();

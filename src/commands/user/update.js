@@ -5,7 +5,7 @@ import log from '../../utils/log'
 
 const update = new Command('update');
 update.arguments('[newUserID]')
-update.description('현재의 ID를 입력받은 ID로 수정합니다');
+update.description('현재의 사용자 이름을 입력받은 이름으로 수정합니다');
 update.action(async(newUserID) => {
     try {
         const context = new Context();

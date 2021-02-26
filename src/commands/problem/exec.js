@@ -5,7 +5,7 @@ import Executor from '../../lib/executor';
 import log from '../../utils/log'
 
 const exec = new Command('exec');
-exec.description('problem exec description');
+exec.description('풀고 있는 문제를 실행합니다');
 exec.action(async () => {
     try {
         const context = new Context();
