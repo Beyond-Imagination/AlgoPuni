@@ -1,5 +1,5 @@
-import {Data} from './data';
-import {User} from './user';
+import Data from './data';
+import User from './user';
 
 import {createRepository, findRepository} from '../../utils/files/repository'
 import {createGitIgnore} from '../../utils/files/gitignore'

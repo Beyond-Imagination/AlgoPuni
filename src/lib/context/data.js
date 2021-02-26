@@ -6,7 +6,7 @@ import {findRepository} from '../../utils/files/repository';
 import {readJSON, writeJSON} from '../../utils/files/json';
 import {ErrorExistUserID, ErrorSameUserIDAsBefore} from '../../utils/error';
 
-export class Data {
+export default class Data {
     constructor(repository=findRepository()) {
         this.repository = repository;
         this.path = path.resolve(this.repository, DATAJSON)

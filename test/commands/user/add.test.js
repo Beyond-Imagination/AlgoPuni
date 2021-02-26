@@ -9,8 +9,8 @@ import {USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository'
 import {ErrorExistUserID} from '../../../src/utils/error';
 import Context from '../../../src/lib/context'
-import {Data} from '../../../src/lib/context/data'
-import {User} from '../../../src/lib/context/user'
+import Data from '../../../src/lib/context/data'
+import User from '../../../src/lib/context/user'
 import add from'../../../src/commands/user/add'
 
 const repositoryDir1 = path.resolve("/","commands","user","add","repo1");

@@ -6,7 +6,7 @@ import {patchFs} from 'fs-monkey';
 
 import {DATAJSON, USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository';
-import {User} from '../../../src/lib/context/user';
+import User from '../../../src/lib/context/user';
 
 const repositoryDir = path.resolve("/","lib","context","user","repo");
 const nonRepositoryDir = path.resolve("/","lib","context","user","non-repo");

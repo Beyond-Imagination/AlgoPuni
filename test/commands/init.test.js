@@ -7,7 +7,7 @@ import {patchFs} from 'fs-monkey';
 import {DATAJSON, USERJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import * as repository from '../../src/utils/files/repository';
-import {User} from '../../src/lib/context/user';
+import User from '../../src/lib/context/user';
 import init from'../../src/commands/init';
 import {ErrorRepositoryExist} from '../../src/utils/error';
 
