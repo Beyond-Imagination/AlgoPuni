@@ -1,6 +1,18 @@
+import util from 'util';
+
 const createError = (code, message) => {
     let err = new Error(message);
     err.code = code;
+    return err;
+}
+
+export const createFormatError = (code, messageFormat) => {
+    let err = new Error(messageFormat);
+    err.code = code;
+    err.setMessage = (...rest) => {
+        err.message = util.format(messageFormat, ...rest);
+        return err;
+    }
     return err;
 }
 
@@ -13,6 +25,8 @@ export const ErrorExistUserID = createError(20, '이미 존재하는 ID 입니�
 export const ErrorSameUserIDAsBefore = createError(21, '바꾸고자 하는 ID가 기존과 동일합니다.');
 
 // 30~39 file error
+export const ErrorReadFile = createFormatError(30, '파일을 찾을 수 없습니다. 경로 : %s');
+export const ErrorWriteFile = createFormatError(31, '파일 저장에 실패했습니다. 에러 : %s');
 
 // 40~49 problem information error
 

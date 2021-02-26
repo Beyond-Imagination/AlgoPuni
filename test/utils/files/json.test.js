@@ -5,6 +5,7 @@ import {patchFs} from 'fs-monkey';
 
 import {DATAJSON, USERJSON} from '../../../src/params';
 import {readJSON, writeJSON} from '../../../src/utils/files/json';
+import {ErrorReadFile, ErrorWriteFile} from '../../../src/utils/error'
 
 const repositoryDir = path.resolve("/","utils","files","json","repo");
 const nonRepositoryDir = path.resolve("/","utils","files","json","non-repo");
@@ -37,7 +38,7 @@ describe("JSON", () => {
             b: "invalid file path",
             c: false,
         }
-        assert.throws(() => writeJSON(nonRepositoryDir, obj), "EISDIR: illegal operation on a directory, open '/utils/files/json/non-repo'")
+        assert.throws(() => writeJSON(nonRepositoryDir, obj), ErrorWriteFile.setMessage("EISDIR: illegal operation on a directory, open '/utils/files/json/non-repo'"));
     })
 
     it("success read", () => {
@@ -47,6 +48,6 @@ describe("JSON", () => {
     })
 
     it("fail read", () => {
-        assert.throws(() => readJSON(nonRepositoryDir), "EISDIR: illegal operation on a directory, open '/utils/files/json/non-repo'")
+        assert.throws(() => readJSON(nonRepositoryDir), ErrorReadFile.setMessage(nonRepositoryDir).message);
     })
 })
