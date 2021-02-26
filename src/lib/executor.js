@@ -19,7 +19,7 @@ export default class Executor {
         const solution = await this.getSolution()
         const testCases = this.problem.getTestCases()
         this.deleteSolution()
-        this.marking(solution, testCases)
+        return this.marking(solution, testCases)
     }
 
     copySolution() {
@@ -55,10 +55,16 @@ export default class Executor {
             this.printResult(i+1, input, output, result)
         }
         
+        let result;
         if (failCase.length) {
-            throw new Error(`테스트 실패. 다음 케이스를 확인하세요. case: ${failCase}`) // TODO do not throw error. just return boolean result
+            log.info(`다음 케이스를 확인하세요. case: ${failCase}`);
+            result = false;
+        } else {
+            log.info("모든 테스트 케이스를 통과하였습니다.");
+            result = true;
         }
-        log.info(`========== Success All Test ==========`)
+        log.info(`========== Test End ==========`);
+        return result;
     }
 
     printResult(index, input, expect, result, time) {

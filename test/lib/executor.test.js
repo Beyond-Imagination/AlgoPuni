@@ -76,14 +76,16 @@ describe("executor", () => {
         const executor = new Executor(context);
         const testCases = executor.problem.getTestCases();
         const solution = (x,y) => x+y;
-        executor.marking(solution, testCases);
+        let result = executor.marking(solution, testCases);
+        assert.isTrue(result);
     })
 
     it("fail marking", () => {
         const executor = new Executor(context);
         const testCases = executor.problem.getTestCases();
         const solution = (x,y) => x-y;
-        assert.throw(() => executor.marking(solution, testCases))
+        let result = executor.marking(solution, testCases);
+        assert.isFalse(result);
     })
 
     // get solution 을 내부에서 호출하는 관계로 테스트 불가능
