@@ -10,6 +10,19 @@ yarn install
 yarn start
 ```
 
+## script
+AlgoPuni 개발에 사용 되는 package script 는 다음과 같습니다.
+* start - AlgoPuni 를 실행합니다. 실행시 필요한 command 와 option 을 같이 전달 할 수 있습니다.
+* test - AlgoPuni test 를 실행합니다.
+* build - babel 을 사용해 AlgoPuni project 를 dist 디렉토리에 빌드합니다. 배포시 해당 디렉토리의 코드가 배포됩니다.
+```
+# script 실행 방법
+# yarn ${script}
+yarn start
+yarn test
+yarn build
+```
+
 ## git hooks
 AlgoPuni 개발중 잘못된 commit 의 추가를 막기 위해 git hook 을 사용합니다.
 현재 `pre-push` hook 을 통해 push branch 와 test code 통과여부를 파악합니다.
