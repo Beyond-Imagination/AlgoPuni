@@ -29,6 +29,7 @@ export const ErrorReadFile = createFormatError(30, '파일을 찾을 수 없습�
 export const ErrorWriteFile = createFormatError(31, '파일 저장에 실패했습니다. 에러 : %s');
 
 // 40~49 problem information error
+export const ErrorNoSelectedProblem = createError(40, '선택된 문제가 없습니다.');
 
 // 50~59 crawling error
 export const ErrorNoProgrammersAccount = createError(40, '프로그래머스 계정 정보가 필요합니다.');

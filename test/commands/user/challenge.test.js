@@ -41,11 +41,13 @@ describe("command user challenge", ()=>{
             }
         };
 
+        const problemNumber = faker.random.number(10000);
         // Save Temp Data.
-        const problem = new Problem(repositoryDir, 0);
+        const problem = new Problem(repositoryDir, problemNumber);
         problem.saveProblem(problemInfo);
 
         const context = new Context(repositoryDir);
+        context.user.currentProblem = problemNumber;
         context.write();        
     });
     

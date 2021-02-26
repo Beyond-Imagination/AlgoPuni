@@ -5,7 +5,7 @@ import log from '../utils/log';
 import {PROBLEMSDIR, ARCHIVEDDIR, PROBLEMJS, PROBLEMMD, INFOJSON, TESTCASESJSON} from '../params';
 import {readJSON, writeJSON} from '../utils/files/json';
 import {isRepository} from '../utils/files/repository';
-import {ErrorNoRepositoryFound} from '../utils/error'
+import {ErrorNoRepositoryFound, ErrorNoSelectedProblem} from '../utils/error'
 
 export default class Problem {
     constructor(repository, problemNumber, isArchived=false) {
@@ -57,6 +57,9 @@ export default class Problem {
     }
 
     displayInfo() {
+        if(!this.problemNumber) {
+            throw ErrorNoSelectedProblem;
+        }
         let problemInfo = this.getInfo();
 
         log.info("********************");
