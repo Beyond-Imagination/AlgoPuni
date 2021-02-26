@@ -63,6 +63,6 @@ describe("command init", () => {
 
         assert.isTrue(repositorySpy.calledOnce);
         assert.isTrue(repositorySpy.threw());
-        exitStub.calledOnceWith(ErrorRepositoryExist.code);
+        assert.isTrue(exitStub.calledOnceWith(ErrorRepositoryExist.code));
     })
 })
