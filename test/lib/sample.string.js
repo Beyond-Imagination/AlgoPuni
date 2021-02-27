@@ -1,6 +1,7 @@
 export const solutionString = `function solution(x, y){
     return x+y;
-}`
+}
+module.exports = solution`
 
 export const casesString = `{
     "inputs": [[1,2]],

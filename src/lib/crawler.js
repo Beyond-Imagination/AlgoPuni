@@ -72,6 +72,7 @@ export default class Crawler {
     async getInitalCode(page) {
         const selector = "#code"
         let code = await page.$eval(selector, element => element.value);
+        code += `\n\nmodule.exports = solution;`
         return code;
     }
 

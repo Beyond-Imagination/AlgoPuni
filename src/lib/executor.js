@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import log from '../utils/log'
 
-import {PROBLEMDIR, SOLUTION} from '../params';
+import {PROBLEMDIR} from '../params';
 import {readJSON} from '../utils/files/json';
 import Problem from './problem';
 
@@ -10,34 +10,17 @@ export default class Executor {
     constructor(context) {
         this.context = context;
         this.problem = new Problem(this.context.repository, this.context.user.challenging);
-        this.solutionPath = path.resolve(this.context.repository, SOLUTION);
     }
 
     async exec() {
-        this.copySolution()
-        this.setExecutable()
         const solution = await this.getSolution()
         const testCases = this.problem.getTestCases()
-        this.deleteSolution()
         return this.marking(solution, testCases)
     }
 
-    copySolution() {
-        const userSolutionPath = this.problem.getUserSolutionPath(this.context.user.userID)
-        fs.copyFileSync(userSolutionPath, this.solutionPath)
-    }
-
-    setExecutable() {
-        fs.appendFileSync(this.solutionPath, '\nexport default solution;');
-    }
-
     async getSolution() {
-        const solution = await import(this.solutionPath);
+        let solution = await import(this.problem.getUserSolutionPath(this.context.user.userID));
         return solution.default;
-    }
-
-    deleteSolution() {
-        fs.unlinkSync(this.solutionPath);
     }
 
     marking(solution, testCases) {

@@ -8,7 +8,7 @@ import {PROBLEMSDIR, ARCHIVEDDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD}
 import {createRepository} from '../../src/utils/files/repository';
 import {ErrorNoRepositoryFound, ErrorNoSelectedProblem} from '../../src/utils/error';
 import Problem from '../../src/lib/problem';
-import {solutionString, casesString, infoString} from './sample.code';
+import {solutionString, casesString, infoString} from './sample.string';
 
 const userID = faker.name.firstName();
 const currentProblem = faker.random.number();
@@ -48,7 +48,6 @@ describe("problem", () => {
     })
 
     it("get test cases", () => {
-        console.log(TESTCASESJSON);
         const problem = new Problem(repositoryDir, currentProblem);
         const testCases = problem.getTestCases();
         const expected = JSON.parse(casesString);

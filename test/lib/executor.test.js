@@ -3,12 +3,13 @@ import chai from 'chai';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 import faker from 'faker';
+import sinon from 'sinon';
 
 import {PROBLEMSDIR, SOLUTION, TESTCASESJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
 import Executor from '../../src/lib/executor';
 import Context from '../../src/lib/context';
-import {solutionString, casesString} from './sample.code'
+import {solutionString, casesString} from './sample.string'
 
 const userID = faker.name.firstName();
 const currentProblem = faker.random.number();
@@ -28,48 +29,29 @@ describe("executor", () => {
         vol.mkdirSync(repositoryDir, {recursive: true})
         vol.mkdirSync(nonRepositoryDir, {recursive: true})
         vol.mkdirSync(problemDir, {recursive: true})
+        vol.mkdirSync(__dirname, {recursive: true})
         patchFs(vol);
-        fs.writeFileSync(path.resolve(problemDir, `${context.user.userID}.js`), solutionString)
+
         fs.writeFileSync(path.resolve(problemDir, TESTCASESJSON), casesString)
+        fs.writeFileSync(path.resolve(__dirname, "./sample.solution.js"), solutionString)
         createRepository(repositoryDir)
     })
-
-    it("copy solution", () => {
-        const executor = new Executor(context);
-        executor.copySolution();
-        const isExist = fs.existsSync(path.resolve(repositoryDir, SOLUTION))
-        assert.isTrue(isExist, "fail to create data json")
-        const file = fs.readFileSync(path.resolve(repositoryDir, SOLUTION))
-        assert.equal(file.toString(), solutionString)
-        fs.unlinkSync(path.resolve(repositoryDir, SOLUTION));
+    
+    const needRestore = []
+    afterEach(() => {
+        while(needRestore.length) {
+            let obj = needRestore.pop();
+            obj.restore();
+        }
     })
 
-    it("set executable", () => {
+    it("get solution", async () => {
         const executor = new Executor(context);
-        executor.copySolution();
-        executor.setExecutable();
-        const isExist = fs.existsSync(path.resolve(repositoryDir, SOLUTION))
-        assert.isTrue(isExist)
-        const file = fs.readFileSync(path.resolve(repositoryDir, SOLUTION))
-        assert.equal(file.toString(), `${solutionString}\nexport default solution;`)
-        fs.unlinkSync(path.resolve(repositoryDir, SOLUTION));
-    })
+        const problemStub = sinon.stub(executor.problem, "getUserSolutionPath").returns(path.resolve(__dirname, "./sample.solution.js"));
+        needRestore.push(problemStub)
 
-    // memefs 를 사용한 mocking 과 javascript 동적 import 가 충돌하여 해당 함수 테스트 진행 불가능. 다른 테스트 방식이 필요
-    // it("get solution", async () => {
-    //     const executor = new Executor(context);
-    //     executor.solutionPath = "../../../test/lib/exec/solution.js"
-    //     const solution = await executor.getSolution();
-    // })
-
-    it("delete solution", () => {
-        const executor = new Executor(context);
-        executor.copySolution();
-        let isExist = fs.existsSync(path.resolve(repositoryDir, SOLUTION))
-        assert.isTrue(isExist)
-        executor.deleteSolution();
-        isExist = fs.existsSync(path.resolve(repositoryDir, SOLUTION))
-        assert.isFalse(isExist)
+        const solution = await executor.getSolution();
+        assert.isFunction(solution);
     })
 
     it("success marking", () => {
@@ -88,9 +70,12 @@ describe("executor", () => {
         assert.isFalse(result);
     })
 
-    // get solution 을 내부에서 호출하는 관계로 테스트 불가능
-    // it("exec test", async () => {
-    //     const executor = new Executor(context);
-    //     await executor.exec();
-    // })
+    it("exec test", async () => {
+        const executor = new Executor(context);
+        const problemStub = sinon.stub(executor.problem, "getUserSolutionPath").returns(path.resolve(__dirname, "./sample.solution.js"));
+        needRestore.push(problemStub)
+
+        const result = await executor.exec();
+        assert.isTrue(result);
+    })
 })
