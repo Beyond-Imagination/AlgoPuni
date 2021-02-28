@@ -32,5 +32,8 @@ export const ErrorWriteFile = createFormatError(31, '파일 저장에 실패했�
 export const ErrorNoSelectedProblem = createError(40, '선택된 문제가 없습니다.');
 
 // 50~59 crawling error
-export const ErrorNoProgrammersAccount = createError(40, '프로그래머스 계정 정보가 필요합니다.');
-export const ErrorFailCrawlProblem = createError(41, '문제 정보를 가져올 수 없습니다.');
+export const ErrorNoProgrammersAccount = createError(50, '프로그래머스 계정 정보가 필요합니다.');
+export const ErrorFailCrawlProblem = createError(51, '문제 정보를 가져올 수 없습니다.');
+
+// 60~61 executor error
+export const ErrorExecuteSolution = createError(60, '작성한 코드를 실행 할 수 없습니다.');

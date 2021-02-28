@@ -1,10 +1,10 @@
 import path from 'path';
 import fs from 'fs';
-import log from '../utils/log'
+import microtime from 'microtime';
 
-import {PROBLEMDIR} from '../params';
-import {readJSON} from '../utils/files/json';
+import log from '../utils/log';
 import Problem from './problem';
+import {ErrorExecuteSolution} from '../utils/error';
 
 export default class Executor {
     constructor(context) {
@@ -13,9 +13,15 @@ export default class Executor {
     }
 
     async exec() {
-        const solution = await this.getSolution()
-        const testCases = this.problem.getTestCases()
-        return this.marking(solution, testCases)
+        log.debug("call Executor.exec()")
+        try {
+            const solution = await this.getSolution();
+            const testCases = this.problem.getTestCases();
+            return this.marking(solution, testCases);
+        } catch (error) {
+            log.debug("Executor.exec() fail", error);
+            throw ErrorExecuteSolution;
+        }
     }
 
     async getSolution() {
@@ -31,11 +37,13 @@ export default class Executor {
         for(let i=0; i<inputs.length; i++){
             let input = inputs[i]
             let output = outputs[i]
+            let before = microtime.nowDouble();
             const result = solution(...input);
+            let after = microtime.nowDouble();
             if(output !== result) {
                 failCase.push(i+1);
             }
-            this.printResult(i+1, input, output, result)
+            this.printResult(i+1, input, output, result, (after-before)*1000)
         }
         
         let result;
@@ -52,14 +60,14 @@ export default class Executor {
 
     printResult(index, input, expect, result, time) {
         log.info(`========== Test Case ${index} 번 ==========`);
-        log.info(`input: ${input}`);
-        log.info(`expect: ${expect}`);
-        log.info(`result: ${result}`);
+        log.info(`input:`, input);
+        log.info(`expect:`, expect);
+        log.info(`result:`, result);
+        log.info(`time: ${time.toFixed(3)}ms`)
         if(expect === result) {
             log.info(`테스트 통과`)
         } else {
             log.info(`테스트 실패`)
         }
-        // TODO add time log
     }
 }

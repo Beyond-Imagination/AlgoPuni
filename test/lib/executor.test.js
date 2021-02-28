@@ -5,8 +5,9 @@ import {patchFs} from 'fs-monkey';
 import faker from 'faker';
 import sinon from 'sinon';
 
-import {PROBLEMSDIR, SOLUTION, TESTCASESJSON} from '../../src/params';
+import {PROBLEMSDIR, TESTCASESJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
+import {ErrorExecuteSolution} from '../../src/utils/error';
 import Executor from '../../src/lib/executor';
 import Context from '../../src/lib/context';
 import {solutionString, casesString} from './sample.string'
@@ -77,5 +78,18 @@ describe("executor", () => {
 
         const result = await executor.exec();
         assert.isTrue(result);
+    })
+
+    it("fail exec test", async () => {
+        const executor = new Executor(context);
+        const problemStub = sinon.stub(executor.problem, "getUserSolutionPath").returns(path.resolve(__dirname, "./inavlid_solution.js"));
+        needRestore.push(problemStub)
+        
+        try {
+            const result = await executor.exec();
+            assert.fail();
+        } catch (error) {
+            assert.equal(error, ErrorExecuteSolution)
+        }
     })
 })
