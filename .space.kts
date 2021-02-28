@@ -6,6 +6,11 @@
 
 job("AlgoPuni") {
     container("node:alpine") {
+        resources {
+			cpu = 512
+            memory = 512
+        }
+
         shellScript {
             interpreter = "/bin/sh"
             content = """
