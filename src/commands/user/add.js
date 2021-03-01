@@ -1,6 +1,8 @@
 import { Command } from 'commander';
+
 import Context from '../../lib/context';
 import log from '../../utils/log';
+import {errorHandler} from '../../utils/error';
 
 const add = new Command('add');
 add.description('입력받은 이름으로 사용자를 생성합니다');
@@ -18,9 +20,8 @@ add.action(async (userID) => {
         context.data.addUser(context.user);
         context.user.create(userID);
         context.data.write();
-    } catch (err) {
-        log.error(err.message);
-        process.exit(err.code);
+    } catch (error) {
+        errorHandler(error);
     }
 });
 

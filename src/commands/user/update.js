@@ -1,7 +1,9 @@
 import { Command } from 'commander';
+
 import Context from '../../lib/context';
 import Problem from '../../lib/problem';
 import log from '../../utils/log'
+import {errorHandler} from '../../utils/error';
 
 const update = new Command('update');
 update.arguments('[newUserID]')
@@ -35,9 +37,8 @@ update.action(async(newUserID) => {
                 problemArchived.changeUserSolutionName(beforeID,newUserID);
             }
         }        
-    } catch (err) {
-        log.error(err.message);
-        process.exit(err.code);
+    } catch (error) {
+        errorHandler(error);
     }
 });
 

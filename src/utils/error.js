@@ -1,8 +1,13 @@
 import util from 'util';
 
+import log from './log';
+
+const errorSet = new Set();
+
 const createError = (code, message) => {
     let err = new Error(message);
     err.code = code;
+    errorSet.add(err);
     return err;
 }
 
@@ -13,8 +18,19 @@ export const createFormatError = (code, messageFormat) => {
         err.message = util.format(messageFormat, ...rest);
         return err;
     }
+    errorSet.add(err);
     return err;
 }
+
+export const errorHandler = (err) => {
+    if(!errorSet.has(err)){
+        err = ErrorUnknown;
+    }
+    log.error(err.message);
+    process.exit(err.code);
+}
+
+export const ErrorUnknown = createError(1, '알 수 없는 에러가 발생하였습니다.');
 
 // 10~19 repository error
 export const ErrorRepositoryExist = createError(10, '알고푸니 프로젝트가 이미 존재합니다.')

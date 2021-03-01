@@ -1,7 +1,9 @@
 import { Command } from 'commander';
+
 import Context from '../../lib/context';
 import Problem from '../../lib/problem'
 import log from '../../utils/log';
+import {errorHandler} from '../../utils/error';
 
 const unsolved = new Command('unsolved');
 unsolved.description('사용자가 풀지 않은 문제의 정보를 출력합니다.');
@@ -27,9 +29,8 @@ unsolved.action(() => {
             // 4. 해당 문제들의 번호, 제목, 풀어야하는 기간을 출력합니다.
             problem.displayInfo();
         }
-    } catch (err) {
-        log.error(err.message);
-        process.exit(err.code);
+    } catch (error) {
+        errorHandler(error);
     }
 });
 
