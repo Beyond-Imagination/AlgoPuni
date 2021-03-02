@@ -7,21 +7,21 @@ import sinon from 'sinon';
 
 import {PROBLEMSDIR, TESTCASESJSON} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
-import {ErrorExecuteSolution} from '../../src/utils/error';
+import {ErrorNoUserSolution, ErrorExecuteSolution} from '../../src/utils/error';
 import Executor from '../../src/lib/executor';
 import Context from '../../src/lib/context';
 import {solutionString, casesString} from './sample.string'
 
 const userID = faker.name.firstName();
-const currentProblem = faker.random.number();
+const challenging = faker.random.number();
 
 const repositoryDir = path.resolve("/","lib","exec","repo");
 const nonRepositoryDir = path.resolve("/","lib","exec","non-repo");
-const problemDir = path.resolve(repositoryDir, PROBLEMSDIR, `${currentProblem}`);
+const problemDir = path.resolve(repositoryDir, PROBLEMSDIR, `${challenging}`);
 
 const context = new Context(repositoryDir);
 context.user.userID = userID;
-context.user.challenging = currentProblem;
+context.user.challenging = challenging;
 
 let assert = chai.assert;
 
@@ -80,16 +80,28 @@ describe("executor", () => {
         assert.isTrue(result);
     })
 
-    it("fail exec test", async () => {
+    it("fail exec test without user solution", async () => {
         const executor = new Executor(context);
-        const problemStub = sinon.stub(executor.problem, "getUserSolutionPath").returns(path.resolve(__dirname, "./inavlid_solution.js"));
-        needRestore.push(problemStub)
         
         try {
             const result = await executor.exec();
             assert.fail();
         } catch (error) {
-            assert.equal(error, ErrorExecuteSolution)
+            assert.deepEqual(error, ErrorNoUserSolution);
+        }
+    })
+
+    it("fail exec test with invalid user solution", async () => {
+        const executor = new Executor(context);
+        const pathStub = sinon.stub(executor.problem, "isUserSolutionExist").returns(true)
+        const problemStub = sinon.stub(executor.problem, "getUserSolutionPath").returns(path.resolve(__dirname, "./inavlid_solution.js"));
+        needRestore.push(pathStub, problemStub)
+        
+        try {
+            const result = await executor.exec();
+            assert.fail();
+        } catch (error) {
+            assert.deepEqual(error, ErrorNoUserSolution);
         }
     })
 })

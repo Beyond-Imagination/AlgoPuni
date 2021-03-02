@@ -52,4 +52,5 @@ export const ErrorNoProgrammersAccount = createError(50, '프로그래머스 계
 export const ErrorFailCrawlProblem = createError(51, '문제 정보를 가져올 수 없습니다.');
 
 // 60~61 executor error
-export const ErrorExecuteSolution = createError(60, '작성한 코드를 실행 할 수 없습니다.');
+export const ErrorNoUserSolution = createFormatError(60, '%d번 문제의 작성한 코드를 찾을 수 없습니다.');
+export const ErrorExecuteSolution = createError(61, '작성한 코드를 실행 할 수 없습니다.');
