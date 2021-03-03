@@ -1,5 +1,5 @@
 {
-    "name": "algopuni",
+    "name": "@beyond_imagination/algopuni",
     "version": "0.4.0",
     "main": "src/index.js",
     "author": "laggu <laggu91@gmail.com>",

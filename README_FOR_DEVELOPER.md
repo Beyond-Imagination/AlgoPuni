@@ -81,6 +81,16 @@ yarn test
 ### 테스트 구조
 모든 test 코드는 `test` 디렉토리 안에 있습니다. 테스트 디렉토리에는 AlgoPuni 소스코드와 똑같은 디렉토리 구조를 갖는 `*.test.js` 파일들이 존재합니다. 이점 유의하여 테스트 파일을 추가해주시기 바랍니다. 모든 test 파일은 `memfs`와 `fs-monkey`를 이용하여 각각 테스트에 사용할 디렉토리를 생성하고 해당 디렉토리에서 테스트를 진행합니다. 이를 통해 각 파일별 독립된 테스트 환경을 갖게됩니다. 
 
-## 배포(추후 작성 예정)
+## 배포
+[AlgoPuni](https://www.npmjs.com/package/@beyond_imagination/algopuni) 배포 관리는 [beyond_imagination npm repository](https://www.npmjs.com/settings/beyond_imagination/packages) 를 사용합니다. 배포는 다음과 같은 과정으로 이루어 집니다.
 
-배포 관리는 space npm module 을 이용할 예정입니다.
+### npm registry 등록
+npm registry 는 배포를 위해서 최초 1번 진행이 필요합니다.
+1. beyond_imagination org 에 등록된 npm 아이디 준비
+2. npm login
+
+### code 배포
+AlgoPuni 프로젝트는 es6 기준으로 개발이 되었기 때문에 배포전 babel을 통해 es5 로 트랜스컴파일 하는 과정이 필요합니다.
+1. 새 버전 tagging
+2. `yarn build` 명령어 실행 
+3. npm publish --public
