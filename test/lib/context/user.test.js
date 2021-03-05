@@ -6,6 +6,7 @@ import {patchFs} from 'fs-monkey';
 
 import {DATAJSON, USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository';
+import {ErrorWriteFile, ErrorReadFile} from '../../../src/utils/error';
 import User from '../../../src/lib/context/user';
 
 const repositoryDir = path.resolve("/","lib","context","user","repo");
@@ -44,18 +45,17 @@ describe("user.json", () => {
         assert.isTrue(isExist, "fail to create user json")
     })
 
-    it("fail create", async () => {
+    it("fail create on non repository", async () => {
         const user = new User(nonRepositoryDir)
         const userStub = sinon.stub(user, 'askUserID').returns("user")
         needRestore.push(userStub)
 
-        user.create()
-            .then(()=>{
-                throw new Error("test fail")
-            })
-            .catch((err)=>{
-                // test success. should throw err
-            })
+        try {
+            await user.create();
+            assert.fail();
+        } catch (error) {
+            assert.equal(error, ErrorWriteFile);
+        }
     })
 
     it("success read", () => {
@@ -66,8 +66,8 @@ describe("user.json", () => {
     })
 
     it("fail read", () => {
-        const user = new User(nonRepositoryDir)
-        assert.throws(() => user.read())
+        const user = new User(nonRepositoryDir);
+        assert.throws(() => user.read(), ErrorReadFile);
     })
 
     it("success write", () => {
@@ -83,6 +83,6 @@ describe("user.json", () => {
         const user = new User(nonRepositoryDir);
         user.user_id = 'laggu';
         user.challenging = 1;
-        assert.throws(() => user.write())
+        assert.throws(() => user.write(), ErrorWriteFile)
     })
 })

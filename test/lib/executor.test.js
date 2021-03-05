@@ -55,6 +55,19 @@ describe("executor", () => {
         assert.isFunction(solution);
     })
 
+    it("fail get solution", async () => {
+        const executor = new Executor(context);
+        const problemStub = sinon.stub(executor.problem, "getUserSolutionPath").returns(path.resolve(__dirname, "./inavlid_solution.js"));
+        needRestore.push(problemStub);
+        
+        try {
+            const result = await executor.getSolution();
+            assert.fail();
+        } catch (error) {
+            assert.deepEqual(error, ErrorNoUserSolution);
+        }
+    })
+
     it("success marking", () => {
         const executor = new Executor(context);
         const testCases = executor.problem.getTestCases();

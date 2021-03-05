@@ -18,7 +18,7 @@ add.action(async (userID) => {
         context.user.userID = userID;
 
         context.data.addUser(context.user);
-        context.user.create(userID);
+        await context.user.create(userID);
         context.data.write();
     } catch (error) {
         errorHandler(error);

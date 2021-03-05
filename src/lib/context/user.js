@@ -5,6 +5,7 @@ import prompts from 'prompts';
 import { USERJSON } from '../../params';
 import { findRepository } from '../../utils/files/repository';
 import { readJSON, writeJSON } from '../../utils/files/json';
+import {ErrorExistUserJSON} from '../../utils/error';
 
 export default class User {
     constructor(repository = findRepository()) {
@@ -16,7 +17,7 @@ export default class User {
 
     async create(userID) {
         if (fs.existsSync(this.path)) {
-            return;
+            throw ErrorExistUserJSON;
         }
         if(!userID) {
             this.userID = await this.askUserID();

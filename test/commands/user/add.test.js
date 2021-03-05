@@ -7,7 +7,7 @@ import {patchFs} from 'fs-monkey';
 
 import {USERJSON} from '../../../src/params';
 import {createRepository} from '../../../src/utils/files/repository'
-import {ErrorExistUserID} from '../../../src/utils/error';
+import {ErrorExistUserID, ErrorNoRepositoryFound, ErrorExistUserJSON} from '../../../src/utils/error';
 import Context from '../../../src/lib/context'
 import Data from '../../../src/lib/context/data'
 import User from '../../../src/lib/context/user'
@@ -82,6 +82,19 @@ describe("command user add", ()=>{
     });
 
     it("fail add with same id", async ()=>{
+        const user = new User(repositoryDir2);
+        user.read();
+        const userID = user.userID;
+
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir2);
+        const exitStub = sinon.stub(process, 'exit')
+        needRestore.push(cwdStub, exitStub)
+
+        await add.parseAsync(['node', 'test', userID]);
+        assert.isTrue(exitStub.calledOnceWith(ErrorExistUserID.code));
+    });
+
+    it("fail add when user.json exists", async () => {
         const userID = faker.name.firstName();
 
         const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir2)
@@ -92,6 +105,17 @@ describe("command user add", ()=>{
         assert.isTrue(isExist);
 
         await add.parseAsync(['node', 'test', userID]);
-        exitStub.calledOnceWith(ErrorExistUserID.code);
+        assert.isTrue(exitStub.calledOnceWith(ErrorExistUserJSON.code));
+    })
+
+    it("fail add on non repository", async () => {
+        const userID = faker.name.firstName();
+
+        const cwdStub = sinon.stub(process, 'cwd').returns(nonRepositoryDir)
+        const exitStub = sinon.stub(process, 'exit')
+        needRestore.push(cwdStub, exitStub)
+
+        await add.parseAsync(['node', 'test', userID]);
+        assert.isTrue(exitStub.calledOnceWith(ErrorNoRepositoryFound.code));
     });
 });

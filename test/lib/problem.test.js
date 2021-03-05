@@ -111,8 +111,21 @@ describe("problem", () => {
         assert.throw(() => problem.saveProblem(problemInfo), ErrorNoRepositoryFound.message)
     })
 
-    it("display info", () => {
+    it("fail display info", () => {
         const problem = new Problem(nonRepositoryDir, 0);
         assert.throw(() => problem.displayInfo(), ErrorNoSelectedProblem.message);
+    })
+
+    it("change user solution name", () => {
+        const beforeUserID = faker.name.firstName();
+        const afterUserID = faker.name.firstName();
+        fs.writeFileSync(path.resolve(problemDir, `${beforeUserID}.js`), solutionString)
+
+        const problem = new Problem(repositoryDir, currentProblem);
+
+        assert.throw(()=>problem.changeUserSolutionName("invalidID", afterUserID));
+        
+        problem.changeUserSolutionName(beforeUserID, afterUserID);
+        assert.isTrue(fs.existsSync(path.resolve(problemDir, `${afterUserID}.js`)));
     })
 })

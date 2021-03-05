@@ -61,16 +61,15 @@ describe("command user challenge", ()=>{
     })
 
     it("success challenge", ()=>{
-        const cwd = sinon.stub(process, 'cwd').returns(repositoryDir)
-        needRestore.push(cwd)
-        const spy = sinon.spy(Problem.prototype, "displayInfo");
-        needRestore.push(spy)
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir);
+        const problemSpy = sinon.spy(Problem.prototype, "displayInfo");
+        needRestore.push(cwdStub, problemSpy)
 
         challenge.parse(['node', 'test']);
-        assert.isTrue(spy.calledOnce);
+        assert.isTrue(problemSpy.calledOnce);
     });
 
-    it("success challenge with no selected challeging problem", ()=>{
+    it("fail challenge with no selected challeging problem", ()=>{
         const context = new Context(repositoryDir);
         context.read();
         context.user.challenging = 0;
@@ -78,10 +77,9 @@ describe("command user challenge", ()=>{
 
         const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir)
         const exitStub = sinon.stub(process, 'exit');
-        const problemSpy = sinon.spy(Problem.prototype, "displayInfo");
-        needRestore.push(cwdStub, exitStub, problemSpy)
+        needRestore.push(cwdStub, exitStub)
 
         challenge.parse(['node', 'test']);
-        assert.isTrue(problemSpy.threw(ErrorNoSelectedProblem));
+        assert.isTrue(exitStub.calledOnceWith(ErrorNoSelectedProblem.code));
     });
 });

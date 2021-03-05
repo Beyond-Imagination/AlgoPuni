@@ -8,6 +8,7 @@ import faker from 'faker';
 import {DATAJSON, USERJSON} from '../../../src/params';
 import {GITIGNORE} from '../../../src/utils/files/gitignore';
 import {createRepository} from '../../../src/utils/files/repository';
+import {ErrorRepositoryExist} from '../../../src/utils/error';
 import Context from '../../../src/lib/context';
 
 const repositoryDir = path.resolve("/","lib","context","repo");
@@ -57,18 +58,17 @@ describe("context", () => {
         assert.isTrue(isExist, "fail to create gitignore")
     })
 
-    it("fail create", () => {
+    it("fail create", async () => {
         const context = new Context(repositoryDir);
         const user = sinon.stub(context.user, 'askUserID').returns("user")
         needRestore.push(user)
 
-        context.create()
-            .then(()=>{
-                throw new Error("test fail")
-            })
-            .catch((err)=>{
-                // test success. should throw err
-            })
+        try {
+            await context.create();
+            assert.fail();
+        } catch (error) {
+            assert.equal(error, ErrorRepositoryExist);
+        }
     })
 
     it("success write", () => {

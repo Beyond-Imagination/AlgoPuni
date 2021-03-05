@@ -36,9 +36,11 @@ export const ErrorUnknown = createError(1, '알 수 없는 에러가 발생하�
 export const ErrorRepositoryExist = createError(10, '알고푸니 프로젝트가 이미 존재합니다.')
 export const ErrorNoRepositoryFound = createError(11, '알고푸니 프로젝트를 찾을 수 없습니다.');
 
-// 20~29 user inforemation error
+// 20~29 context error
 export const ErrorExistUserID = createError(20, '이미 존재하는 ID 입니다.');
 export const ErrorSameUserIDAsBefore = createError(21, '바꾸고자 하는 ID가 기존과 동일합니다.');
+export const ErrorExistUserJSON = createError(22, '.algopuni/user.json이 이미 저장되어 있습니다.');
+export const ErrorExistDataJSON = createError(23, '.algopuni/data.json이 이미 저장되어 있습니다.');
 
 // 30~39 file error
 export const ErrorReadFile = createFormatError(30, '파일을 찾을 수 없습니다. 경로 : %s');

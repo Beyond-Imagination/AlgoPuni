@@ -4,7 +4,7 @@ import path from 'path';
 import {DATAJSON} from '../../params';
 import {findRepository} from '../../utils/files/repository';
 import {readJSON, writeJSON} from '../../utils/files/json';
-import {ErrorExistUserID, ErrorSameUserIDAsBefore} from '../../utils/error';
+import {ErrorExistUserID, ErrorSameUserIDAsBefore, ErrorExistDataJSON} from '../../utils/error';
 
 export default class Data {
     constructor(repository=findRepository()) {
@@ -20,7 +20,7 @@ export default class Data {
 
     create() {
         if (fs.existsSync(this.path)) {
-            return;
+            throw ErrorExistDataJSON;
         }
         this.write();
     }
@@ -57,6 +57,5 @@ export default class Data {
         
         this.users[afterID] = this.users[beforeID];
         delete this.users[beforeID];
-        return;
-    }        
+    }
 }
