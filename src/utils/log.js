@@ -1,6 +1,5 @@
-import loglevel from 'loglevel'
+import log from 'loglevel'
 
-const log = loglevel;
-log.setLevel('info');
+log.setLevel(process.env.LOGLEVEL || "info");
 
 export default log;

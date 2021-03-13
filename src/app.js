@@ -7,7 +7,11 @@ import init from'./commands/init'
 const program = new Command();
 program.version(version);
 
-program.on('option:debug', () => log.setLevel("debug"));
+program.on('option:debug', () => {
+    process.env.LOGLEVEL = "debug";
+    log.setLevel("debug");
+    log.debug("set log level to debug");
+});
 program.addOption(new Option('-d, --debug').hideHelp())
 program.action(() => program.help());
 
