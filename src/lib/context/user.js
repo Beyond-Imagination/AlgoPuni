@@ -13,6 +13,7 @@ export default class User {
         this.path = path.resolve(this.repository, USERJSON);
         this.userID = "";
         this.challenging = 0;
+        this.programmers = {email:"",password:""}
     }
 
     async create(userID) {
@@ -51,6 +52,7 @@ export default class User {
         return {
             userID: this.userID,
             challenging: this.challenging,
+            programmers: this.programmers
         }
     }
 }

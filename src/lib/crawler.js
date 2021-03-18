@@ -1,3 +1,4 @@
+import log from 'loglevel';
 import puppeteer from "puppeteer";
 
 import {ErrorNoProgrammersAccount, ErrorFailCrawlProblem} from '../utils/error';

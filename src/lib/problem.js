@@ -76,7 +76,12 @@ export default class Problem {
     changeFileName(beforePath, afterPath) {
         fs.renameSync(beforePath, afterPath);
     }
+
     changeUserSolutionName(beforeID,newUserID){
         this.changeFileName(this.getUserSolutionPath(beforeID),this.getUserSolutionPath(newUserID));
+    }
+
+    isProblemExist(){
+        return fs.existsSync(this.getProblemPath())
     }
 }

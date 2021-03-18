@@ -128,4 +128,19 @@ describe("problem", () => {
         problem.changeUserSolutionName(beforeUserID, afterUserID);
         assert.isTrue(fs.existsSync(path.resolve(problemDir, `${afterUserID}.js`)));
     })
+
+    it("fail problem existed",() =>{
+        const problem = new Problem('', '');
+        assert.isFalse(problem.isProblemExist());
+    })
+
+    it("fail archived problem existed",() =>{
+        const problem = new Problem('', '',true);
+        assert.isFalse(problem.isProblemExist());
+    })
+    
+    it("check problem existed", () =>{
+        const problem = new Problem(repositoryDir, currentProblem);
+        assert.isTrue(problem.isProblemExist());
+    })
 })
