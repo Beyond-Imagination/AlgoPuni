@@ -50,6 +50,7 @@ export const ErrorWriteFile = createFormatError(31, '파일 저장에 실패했�
 // 40~49 problem information error
 export const ErrorNoSelectedProblem = createError(40, '선택된 문제가 없습니다.');
 export const ErrorExistProblemNumber = createError(41, '선택된 문제는 이미 저장되어있습니다');
+export const ErrorTestCaseFail = createError(42, 'test case가 틀렸습니다. 틀린 부분을 확인해주세요.');
 
 // 50~59 crawling error
 export const ErrorNoProgrammersAccount = createError(50, '프로그래머스 계정 정보가 필요합니다.');

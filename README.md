@@ -44,6 +44,7 @@ AlgoPuni 실행에 필요한 사항
 ### `algopuni problem exec`
 
 ### `algopuni problem solve`
+풀이가 완료 된 문제를 동기화합니다
 
 ### `algopuni problem archive`
 
