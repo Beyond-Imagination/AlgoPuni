@@ -40,6 +40,7 @@ AlgoPuni 실행에 필요한 사항
 ### `algopuni problem add`
 
 ### `algopuni problem challenge`
+해당 문제를 풀기 위한 파일을 생성합니다.
 
 ### `algopuni problem exec`
 
