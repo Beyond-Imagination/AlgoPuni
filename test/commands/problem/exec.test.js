@@ -2,11 +2,11 @@ import faker from 'faker';
 import chai from 'chai';
 import path from 'path';
 import sinon from 'sinon';
-import {vol, fs} from 'memfs';
+import {vol} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
 import {createRepository} from '../../../src/utils/files/repository';
-import {ErrorNoSelectedProblem, ErrorExecuteSolution} from '../../../src/utils/error';
+import {ErrorNoRepositoryFound, ErrorNoSelectedProblem, ErrorNoUserSolution} from '../../../src/utils/error';
 import log from '../../../src/utils/log';
 import Context from '../../../src/lib/context';
 import Executor from '../../../src/lib/executor';
@@ -46,38 +46,49 @@ describe("command problem exec", ()=>{
         }
     })
 
-    it("fail exec by unselected problem", async ()=>{
-        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir1);
+    it("fail exec with no repository", async ()=>{
+        const cwdStub = sinon.stub(process, 'cwd').returns(nonRepositoryDir);
         const exitStub = sinon.stub(process, 'exit');
-        const logSpy = sinon.stub(log, 'error');
+        const logSpy = sinon.spy(log, 'error');
         needRestore.push(cwdStub, exitStub, logSpy);
 
         await exec.parseAsync(['node', 'test']);
 
-        logSpy.calledOnceWith(ErrorNoSelectedProblem.message);
-        exitStub.calledOnceWith(ErrorNoSelectedProblem.code);
+        assert.isTrue(logSpy.calledOnceWith(ErrorNoRepositoryFound.message));
+        assert.isTrue(exitStub.calledOnceWith(ErrorNoRepositoryFound.code));
+    });
+
+    it("fail exec by unselected problem", async ()=>{
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir1);
+        const exitStub = sinon.stub(process, 'exit');
+        const logSpy = sinon.spy(log, 'error');
+        needRestore.push(cwdStub, exitStub, logSpy);
+
+        await exec.parseAsync(['node', 'test']);
+
+        assert.isTrue(logSpy.calledOnceWith(ErrorNoSelectedProblem.message));
+        assert.isTrue(exitStub.calledOnceWith(ErrorNoSelectedProblem.code));
     });
 
     it("fail exec by execute solution", async ()=>{
         const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir2);
         const exitStub = sinon.stub(process, 'exit');
-        const logSpy = sinon.stub(log, 'error');
+        const logSpy = sinon.spy(log, 'error');
         needRestore.push(cwdStub, exitStub, logSpy);
 
         await exec.parseAsync(['node', 'test']);
 
-        logSpy.calledOnceWith(ErrorExecuteSolution.message);
-        exitStub.calledOnceWith(ErrorExecuteSolution.code);
+        assert.isTrue(logSpy.calledOnceWith(ErrorNoUserSolution.message));
+        assert.isTrue(exitStub.calledOnceWith(ErrorNoUserSolution.code));
     });
 
     it("sucess exec", async ()=>{
         const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir2);
-        const exeuctorSpy = sinon.stub(Executor.prototype, 'exec').returns(true);
-        needRestore.push(cwdStub, exeuctorSpy);
+        const exeuctorStub = sinon.stub(Executor.prototype, 'exec').returns(true);
+        needRestore.push(cwdStub, exeuctorStub);
 
         await exec.parseAsync(['node', 'test']);
 
-        assert.isTrue(exeuctorSpy.calledOnce);
-        assert.isTrue(exeuctorSpy.returned(true));
+        assert.isTrue(exeuctorStub.calledOnce);
     });
 });

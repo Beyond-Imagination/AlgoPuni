@@ -5,11 +5,12 @@ import sinon from 'sinon';
 import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
-import {createRepository} from '../../../src/utils/files/repository'
-import log from '../../../src/utils/log'
-import Problem from '../../../src/lib/problem'
-import Context from '../../../src/lib/context'
-import unsolved from'../../../src/commands/user/unsolved'
+import {createRepository} from '../../../src/utils/files/repository';
+import {ErrorNoSelectedProblem} from '../../../src/utils/error';
+import log from '../../../src/utils/log';
+import Problem from '../../../src/lib/problem';
+import Context from '../../../src/lib/context';
+import unsolved from'../../../src/commands/user/unsolved';
 
 const repositoryDir = path.resolve("/","commands","user","unsolved","repo");
 const nonRepositoryDir = path.resolve("/","commands","user","unsolved","non-repo");
@@ -18,6 +19,7 @@ const challenging = faker.random.number();
 const userID = faker.name.firstName();
 
 const assert = chai.assert;
+log.setLevel("debug");
 
 describe("command user unsolved", ()=>{
     before(()=>{
@@ -64,13 +66,12 @@ describe("command user unsolved", ()=>{
     })
 
     it("success unsolved when unsolved problem exist", ()=>{
-        const cwd = sinon.stub(process, 'cwd').returns(repositoryDir)
-        needRestore.push(cwd)
-        const spy = sinon.spy(Problem.prototype, "displayInfo");
-        needRestore.push(spy)
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir)
+        const problemSpy = sinon.spy(Problem.prototype, "displayInfo");
+        needRestore.push(cwdStub, problemSpy)
 
         unsolved.parse(['node', 'test']);
-        assert.isTrue(spy.calledOnce);
+        assert.isTrue(problemSpy.calledOnce);
     });
 
     it("success unsolved when user solved all problem", ()=>{
@@ -79,12 +80,11 @@ describe("command user unsolved", ()=>{
         context.data.users[userID].unsolved = [];
         context.write();
         
-        const cwd = sinon.stub(process, 'cwd').returns(repositoryDir)
-        needRestore.push(cwd)
-        const spy = sinon.spy(log, "info");
-        needRestore.push(spy)
+        const cwdStub = sinon.stub(process, 'cwd').returns(repositoryDir)
+        const logSpy = sinon.spy(log, "info");
+        needRestore.push(cwdStub, logSpy)
 
         unsolved.parse(['node', 'test']);
-        assert.isTrue(spy.calledOnceWith("모든 문제를 풀었습니다."));
+        assert.isTrue(logSpy.calledOnceWith("모든 문제를 풀었습니다."));
     });
 });
