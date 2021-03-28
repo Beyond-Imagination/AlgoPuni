@@ -42,6 +42,8 @@ export const ErrorExistUserID = createError(20, '이미 존재하는 ID 입니�
 export const ErrorSameUserIDAsBefore = createError(21, '바꾸고자 하는 ID가 기존과 동일합니다.');
 export const ErrorExistUserJSON = createError(22, '.algopuni/user.json이 이미 저장되어 있습니다.');
 export const ErrorExistDataJSON = createError(23, '.algopuni/data.json이 이미 저장되어 있습니다.');
+export const ErrorUserUnsolvedCheck = createFormatError(24, '해당 문제는 %s 사용자가 users.unsolved에 존재합니다.');
+export const ErrorNoProblemsUnsolvedCheck = createFormatError(25, '%d 문제는 problems.unsolved에 존재하지 않습니다.');
 
 // 30~39 file error
 export const ErrorReadFile = createFormatError(30, '파일을 찾을 수 없습니다. 경로 : %s');
@@ -52,6 +54,7 @@ export const ErrorNoSelectedProblem = createError(40, '선택된 문제가 없�
 export const ErrorExistProblemNumber = createError(41, '선택된 문제는 이미 저장되어있습니다');
 export const ErrorTestCaseFail = createError(42, 'test case가 틀렸습니다. 틀린 부분을 확인해주세요.');
 export const ErrorExistProblemDir = createError(43, '해당 문제가 존재하지 않습니다.');
+export const ErrorProblemUnpassed = createFormatError(44, '%s 사용자가 문제의 조건을 통과하지 못했습니다.');
 
 // 50~59 crawling error
 export const ErrorNoProgrammersAccount = createError(50, '프로그래머스 계정 정보가 필요합니다.');

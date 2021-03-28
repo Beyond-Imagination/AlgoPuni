@@ -26,8 +26,8 @@ export default class Problem {
         writeJSON(path.resolve(problemPath, INFOJSON), problem.info);
     }
 
-    getProblemPath() {
-        if(this.isArchived){
+    getProblemPath(isArchived = this.isArchived) {
+        if(isArchived){
             return path.resolve(this.repository, PROBLEMSDIR, ARCHIVEDDIR, `${this.problemNumber}`);
         } else {
             return path.resolve(this.repository, PROBLEMSDIR, `${this.problemNumber}`);
@@ -77,11 +77,25 @@ export default class Problem {
         fs.renameSync(beforePath, afterPath);
     }
 
+    archive(){
+        const date = new Date();
+        let info = this.getInfo();
+        info.archived = date.toLocaleString();
+        this.saveProblemInfo(info);
+
+        this.isArchived = true;
+        this.changeFileName(this.getProblemPath(false),this.getProblemPath(true));
+    }
+
     changeUserSolutionName(beforeID,newUserID){
         this.changeFileName(this.getUserSolutionPath(beforeID),this.getUserSolutionPath(newUserID));
     }
 
     isProblemExist(){
         return fs.existsSync(this.getProblemPath())
+    }
+    
+    saveProblemInfo(info) {
+        writeJSON(path.resolve(this.getProblemPath(), INFOJSON), info);
     }
 }
