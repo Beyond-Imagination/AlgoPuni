@@ -6,7 +6,7 @@ import { vol, fs } from 'memfs';
 import { patchFs } from 'fs-monkey';
 
 import { createRepository } from '../../../src/utils/files/repository';
-import { ErrorTestCaseFail, ErrorNoSelectedProblem, ErrorExecuteSolution } from '../../../src/utils/error';
+import { ErrorTestCaseFail, ErrorZeroProblemNumber, ErrorExecuteSolution } from '../../../src/utils/error';
 import log from '../../../src/utils/log';
 import Context from '../../../src/lib/context';
 import Executor from '../../../src/lib/executor';
@@ -62,8 +62,8 @@ describe("command problem solve", () => {
 
         await solve.parseAsync(['node', 'test']);
 
-        assert.isTrue(logSpy.calledOnceWith(ErrorNoSelectedProblem.message));
-        assert.isTrue(exitStub.calledOnceWith(ErrorNoSelectedProblem.code));
+        assert.isTrue(logSpy.calledOnceWith(ErrorZeroProblemNumber.message));
+        assert.isTrue(exitStub.calledOnceWith(ErrorZeroProblemNumber.code));
     });
 
     it("fail solve by test case false", async ()=>{
@@ -76,7 +76,7 @@ describe("command problem solve", () => {
 
         await solve.parseAsync(['node', 'test']);
 
-        assert.isTrue(logSpy.calledOnceWith(ErrorTestCaseFail.message));        
+        assert.isTrue(logSpy.calledOnceWith(ErrorTestCaseFail.setMessage(unsolved1).message));        
         assert.isTrue(exitStub.calledOnceWith(ErrorTestCaseFail.code));
     });
 

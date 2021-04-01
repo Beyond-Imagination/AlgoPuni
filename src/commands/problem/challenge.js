@@ -17,7 +17,7 @@ challenge.action((problemNumber) => {
 
         const problem = new Problem(context.repository, problemNumber);
         if (!problem.isProblemExist()) {
-            throw ErrorExistProblemDir;
+            throw ErrorExistProblemDir.setMessage(problemNumber);
         }
 
         if (!problem.isUserSolutionExist(userID)) {

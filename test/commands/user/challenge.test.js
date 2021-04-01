@@ -6,7 +6,7 @@ import {vol, fs} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
 import {createRepository} from '../../../src/utils/files/repository';
-import {ErrorNoSelectedProblem} from '../../../src/utils/error';
+import {ErrorZeroProblemNumber} from '../../../src/utils/error';
 import Problem from '../../../src/lib/problem';
 import Context from '../../../src/lib/context';
 import challenge from'../../../src/commands/user/challenge';
@@ -80,6 +80,6 @@ describe("command user challenge", ()=>{
         needRestore.push(cwdStub, exitStub)
 
         challenge.parse(['node', 'test']);
-        assert.isTrue(exitStub.calledOnceWith(ErrorNoSelectedProblem.code));
+        assert.isTrue(exitStub.calledOnceWith(ErrorZeroProblemNumber.code));
     });
 });

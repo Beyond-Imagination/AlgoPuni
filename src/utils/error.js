@@ -50,11 +50,13 @@ export const ErrorReadFile = createFormatError(30, '파일을 찾을 수 없습�
 export const ErrorWriteFile = createFormatError(31, '파일 저장에 실패했습니다. 에러 : %s');
 
 // 40~49 problem information error
-export const ErrorNoSelectedProblem = createError(40, '선택된 문제가 없습니다.');
-export const ErrorExistProblemNumber = createError(41, '선택된 문제는 이미 저장되어있습니다');
-export const ErrorTestCaseFail = createError(42, 'test case가 틀렸습니다. 틀린 부분을 확인해주세요.');
-export const ErrorExistProblemDir = createError(43, '해당 문제가 존재하지 않습니다.');
-export const ErrorProblemUnpassed = createFormatError(44, '%s 사용자가 문제의 조건을 통과하지 못했습니다.');
+export const ErrorZeroProblemNumber = createError(40, '문제 번호가 0번입니다.');
+export const ErrorNoSelectedProblem = createFormatError(41, '%d번 문제가 없습니다.');
+export const ErrorExistProblemNumber = createFormatError(42, '%d번 문제는 이미 저장되어있습니다');
+export const ErrorTestCaseFail = createFormatError(43, '%d번 문제의 test case가 통과하지 못했습니다. 틀린 부분을 확인해주세요.');
+export const ErrorExistProblemDir = createFormatError(44, '%d번 문제가 Problems폴더에 존재하지 않습니다.');
+export const ErrorProblemUnpassed = createFormatError(45, '%s 사용자가 문제의 조건을 통과하지 못했습니다.');
+export const ErrorNoArchivedProblem = createFormatError(46, '%d번 문제가 아카이빙되어있지 않습니다.');
 
 // 50~59 crawling error
 export const ErrorNoProgrammersAccount = createError(50, '프로그래머스 계정 정보가 필요합니다.');

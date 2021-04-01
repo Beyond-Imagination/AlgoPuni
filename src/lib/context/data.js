@@ -6,6 +6,8 @@ import {findRepository} from '../../utils/files/repository';
 import {readJSON, writeJSON} from '../../utils/files/json';
 import {ErrorExistUserID, ErrorSameUserIDAsBefore, ErrorExistDataJSON} from '../../utils/error';
 
+const INVALID_INDEX = -1;
+
 export default class Data {
     constructor(repository=findRepository()) {
         this.repository = repository;
@@ -57,5 +59,22 @@ export default class Data {
         
         this.users[afterID] = this.users[beforeID];
         delete this.users[beforeID];
+        return;
+    }
+
+    isExistedProblem(problemNum){
+        if(this.problems.unsolved.indexOf(problemNum) !== INVALID_INDEX)
+            return true;
+        else if(this.problems.archived.indexOf(problemNum) !== INVALID_INDEX)
+            return true;
+
+        return false;
+    }
+
+    isArchivedProblem(problemNum){
+        if(this.problems.archived.indexOf(problemNum) === INVALID_INDEX)
+            return false;
+
+        return true;
     }
 }

@@ -107,7 +107,7 @@ describe("command problem add", ()=>{
         
         await add.parseAsync(['node', 'test', problemNumber2]);
 
-        assert.isTrue(logSpy.calledOnceWith(ErrorExistProblemNumber.message));
+        assert.isTrue(logSpy.calledOnceWith(ErrorExistProblemNumber.setMessage(problemNumber2).message));
         assert.isTrue(exitStub.calledOnceWith(ErrorExistProblemNumber.code));
     });
 
@@ -119,7 +119,7 @@ describe("command problem add", ()=>{
         
         await add.parseAsync(['node', 'test', problemNumber3]);
 
-        assert.isTrue(logSpy.calledOnceWith(ErrorExistProblemNumber.message));
+        assert.isTrue(logSpy.calledOnceWith(ErrorExistProblemNumber.setMessage(problemNumber3).message));
         assert.isTrue(exitStub.calledOnceWith(ErrorExistProblemNumber.code));
     });
 

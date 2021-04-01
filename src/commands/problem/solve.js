@@ -2,7 +2,8 @@ import { Command } from 'commander'
 import Context from '../../lib/context';
 import Executor from '../../lib/executor';
 import log from '../../utils/log'
-import { errorHandler, ErrorTestCaseFail, ErrorNoSelectedProblem } from '../../utils/error';
+import { errorHandler, ErrorTestCaseFail, ErrorZeroProblemNumber } from '../../utils/error';
+import challenge from '../user/challenge';
 
 const solve = new Command('solve');
 solve.description('풀이가 완료 된 문제를 동기화합니다');
@@ -18,7 +19,7 @@ solve.action(async () => {
         let challenging = context.user.challenging;
 
         if (challenging === 0) {
-            throw ErrorNoSelectedProblem;
+            throw ErrorZeroProblemNumber;
         }
     
         if (await executor.exec()) {
@@ -33,7 +34,7 @@ solve.action(async () => {
                 context.write();
             }
         } else {
-            throw ErrorTestCaseFail;
+            throw ErrorTestCaseFail.setMessage(challenging);
         }
         
     } catch (error) {

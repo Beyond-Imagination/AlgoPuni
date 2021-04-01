@@ -90,7 +90,7 @@ describe("command problem exec", () => {
 
         challenge.parseAsync(['node', 'test', problemNumber]);
 
-        assert.isTrue(logSpy.calledOnceWith(ErrorExistProblemDir.message));
+        assert.isTrue(logSpy.calledOnceWith(ErrorExistProblemDir.setMessage(problemNumber).message));
         assert.isTrue(exitStub.calledOnceWith(ErrorExistProblemDir.code));
     });
 

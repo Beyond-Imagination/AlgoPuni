@@ -5,7 +5,7 @@ import log from '../utils/log';
 import {PROBLEMSDIR, ARCHIVEDDIR, PROBLEMJS, PROBLEMMD, INFOJSON, TESTCASESJSON} from '../params';
 import {readJSON, writeJSON} from '../utils/files/json';
 import {isRepository} from '../utils/files/repository';
-import {ErrorNoRepositoryFound, ErrorNoSelectedProblem} from '../utils/error'
+import {ErrorZeroProblemNumber, ErrorNoRepositoryFound, ErrorNoArchivedProblem, ErrorReadFile} from '../utils/error';
 
 export default class Problem {
     constructor(repository, problemNumber, isArchived=false) {
@@ -58,7 +58,7 @@ export default class Problem {
 
     displayInfo() {
         if(!this.problemNumber) {
-            throw ErrorNoSelectedProblem;
+            throw ErrorZeroProblemNumber;
         }
         let problemInfo = this.getInfo();
 
@@ -77,16 +77,6 @@ export default class Problem {
         fs.renameSync(beforePath, afterPath);
     }
 
-    archive(){
-        const date = new Date();
-        let info = this.getInfo();
-        info.archived = date.toLocaleString();
-        this.saveProblemInfo(info);
-
-        this.isArchived = true;
-        this.changeFileName(this.getProblemPath(false),this.getProblemPath(true));
-    }
-
     changeUserSolutionName(beforeID,newUserID){
         this.changeFileName(this.getUserSolutionPath(beforeID),this.getUserSolutionPath(newUserID));
     }
@@ -97,5 +87,33 @@ export default class Problem {
     
     saveProblemInfo(info) {
         writeJSON(path.resolve(this.getProblemPath(), INFOJSON), info);
+    }
+    
+    archive(){
+        if (fs.existsSync(this.getProblemPath(false)) === false)
+        throw ErrorReadFile;
+
+        const date = new Date();
+        let info = this.getInfo();
+        info.archived = date.toLocaleString();
+        this.saveProblemInfo(info);
+
+        this.isArchived = true;
+        this.changeFileName(this.getProblemPath(false),this.getProblemPath(true));
+    }
+
+    unarchive() {
+        if(this.isArchived === false){
+            throw ErrorNoArchivedProblem.setMessage(this.problemNumber);
+        }
+
+        if (fs.existsSync(this.getProblemPath(true)) === false)
+            throw ErrorReadFile;
+        
+        let info = this.getInfo();
+        delete info.archived;
+        this.saveProblemInfo(info);
+
+        this.changeFileName(this.getProblemPath(true), this.getProblemPath(false));
     }
 }

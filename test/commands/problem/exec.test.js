@@ -6,7 +6,7 @@ import {vol} from 'memfs';
 import {patchFs} from 'fs-monkey';
 
 import {createRepository} from '../../../src/utils/files/repository';
-import {ErrorNoRepositoryFound, ErrorNoSelectedProblem, ErrorNoUserSolution} from '../../../src/utils/error';
+import {ErrorNoRepositoryFound, ErrorZeroProblemNumber, ErrorNoUserSolution} from '../../../src/utils/error';
 import log from '../../../src/utils/log';
 import Context from '../../../src/lib/context';
 import Executor from '../../../src/lib/executor';
@@ -66,8 +66,8 @@ describe("command problem exec", ()=>{
 
         await exec.parseAsync(['node', 'test']);
 
-        assert.isTrue(logSpy.calledOnceWith(ErrorNoSelectedProblem.message));
-        assert.isTrue(exitStub.calledOnceWith(ErrorNoSelectedProblem.code));
+        assert.isTrue(logSpy.calledOnceWith(ErrorZeroProblemNumber.message));
+        assert.isTrue(exitStub.calledOnceWith(ErrorZeroProblemNumber.code));
     });
 
     it("fail exec by execute solution", async ()=>{

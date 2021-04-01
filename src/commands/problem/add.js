@@ -19,7 +19,7 @@ add.action(async (problemNumber) => {
         }
         
         if(context.data.problems.unsolved.filter(checkExistProblemNumber).length || context.data.problems.archived.filter(checkExistProblemNumber).length ) {
-            throw ErrorExistProblemNumber;
+            throw ErrorExistProblemNumber.setMessage(problemNumber);
         }
 
         const crawler = new Crawler(problemNumber, context.user.programmers);
