@@ -90,8 +90,13 @@ export default class Problem {
     }
     
     archive(){
-        if (fs.existsSync(this.getProblemPath(false)) === false)
-        throw ErrorReadFile;
+        if(fs.existsSync(this.getProblemPath(false)) === false){
+            throw ErrorReadFile;
+        }
+    
+        if(!fs.existsSync(path.resolve(this.repository, PROBLEMSDIR, ARCHIVEDDIR))){
+            fs.mkdirSync(path.resolve(this.repository, PROBLEMSDIR, ARCHIVEDDIR));
+        }
 
         const date = new Date();
         let info = this.getInfo();
