@@ -7,14 +7,14 @@ import Problem from '../../lib/problem'
 import { errorHandler, ErrorProblemUnpassed, ErrorUserUnsolvedCheck, ErrorNoProblemsUnsolvedCheck } from '../../utils/error';
 
 const archive = new Command('archive');
-archive.arguments('<problemNumber...>')
+archive.arguments('<problemNumbers...>')
 archive.description('모두가 푼 문제를 따로 저장합니다.');
-archive.action(async (problemNumber) => {
+archive.action(async (problemNumbers) => {
     try {
         const context = new Context();
         context.read();
 
-        for (let archivingNum of problemNumber) {
+        for (let archivingNum of problemNumbers) {
             archivingNum = Number(archivingNum);
 
             if (context.data.problems.unsolved.indexOf(archivingNum) === -1) {
