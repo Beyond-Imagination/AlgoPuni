@@ -6,7 +6,7 @@ import faker from 'faker';
 
 import {PROBLEMSDIR, ARCHIVEDDIR, INFOJSON, TESTCASESJSON, PROBLEMJS, PROBLEMMD} from '../../src/params';
 import {createRepository} from '../../src/utils/files/repository';
-import {ErrorNoRepositoryFound, ErrorZeroProblemNumber} from '../../src/utils/error';
+import {ErrorNoRepositoryFound, ErrorZeroProblemNumber, ErrorExistProblemDir, ErrorNoArchivedProblem} from '../../src/utils/error';
 import Problem from '../../src/lib/problem';
 import {solutionString, casesString, infoString} from './sample.string';
 
@@ -14,8 +14,10 @@ const userID = faker.name.firstName();
 const currentProblem = faker.random.number();
 
 const repositoryDir = path.resolve("/","lib","problems","repo");
+const repositoryDir1 = path.resolve("/","lib","problems","repo1");
 const nonRepositoryDir = path.resolve("/","lib","problems","non-repo");
 const problemDir = path.resolve(repositoryDir, PROBLEMSDIR, `${currentProblem}`);
+const problemDir1 = path.resolve(repositoryDir1, PROBLEMSDIR,ARCHIVEDDIR, `${currentProblem}`);
 
 let assert = chai.assert;
 
@@ -24,11 +26,19 @@ describe("problem", () => {
         vol.mkdirSync(repositoryDir, {recursive: true})
         vol.mkdirSync(nonRepositoryDir, {recursive: true})
         vol.mkdirSync(problemDir, {recursive: true})
+        vol.mkdirSync(repositoryDir1, {recursive: true})
+        vol.mkdirSync(problemDir1, {recursive: true})
+
         patchFs(vol);
         fs.writeFileSync(path.resolve(problemDir, PROBLEMJS), solutionString)
         fs.writeFileSync(path.resolve(problemDir, TESTCASESJSON), casesString)
         fs.writeFileSync(path.resolve(problemDir, INFOJSON), infoString)
         createRepository(repositoryDir)
+
+        fs.writeFileSync(path.resolve(problemDir1, PROBLEMJS), solutionString)
+        fs.writeFileSync(path.resolve(problemDir1, TESTCASESJSON), casesString)
+        fs.writeFileSync(path.resolve(problemDir1, INFOJSON), infoString)
+        createRepository(repositoryDir1)
     })
 
     it("get problem path", () => {
@@ -143,4 +153,47 @@ describe("problem", () => {
         const problem = new Problem(repositoryDir, currentProblem);
         assert.isTrue(problem.isProblemExist());
     })
+
+    it("fail archive directory is not found",() =>{
+        const problem = new Problem(nonRepositoryDir, currentProblem);
+        assert.throw(() => problem.archive(), ErrorExistProblemDir.message);
+    })
+
+    it("fail unarchive directory is not found",() =>{
+        const problem = new Problem(repositoryDir,currentProblem,true);
+        assert.throw(() => problem.unarchive(), ErrorExistProblemDir.message);
+    })
+
+    it("fail unarchive isArchived is false",() =>{
+        const problem = new Problem(repositoryDir,currentProblem);
+        ErrorNoArchivedProblem.setMessage(currentProblem);
+        assert.throw(() => problem.unarchive(), ErrorNoArchivedProblem.message);
+    })
+
+    it("success archive",() =>{
+        const problem = new Problem(repositoryDir,currentProblem);
+        
+        assert.isTrue(fs.existsSync(problem.getProblemPath()));
+        assert.isFalse(fs.existsSync(path.resolve(repositoryDir,PROBLEMSDIR,ARCHIVEDDIR)))
+        
+        problem.archive();
+
+        assert.isTrue(fs.existsSync(path.resolve(repositoryDir,PROBLEMSDIR,ARCHIVEDDIR,`${currentProblem}`)))
+        assert.isFalse(fs.existsSync(path.resolve(repositoryDir,PROBLEMSDIR,`${currentProblem}`)))
+    })
+
+    it("success unarchive",() =>{
+        const problem = new Problem(repositoryDir1,currentProblem,true);
+
+        assert.isTrue(fs.existsSync(problem.getProblemPath()));
+        assert.isFalse(fs.existsSync(path.resolve(repositoryDir1,PROBLEMSDIR,`${currentProblem}`)));
+
+        problem.unarchive();
+
+        assert.isFalse(fs.existsSync(problem.getProblemPath()))
+        assert.isTrue(fs.existsSync(path.resolve(repositoryDir1,PROBLEMSDIR,`${currentProblem}`)))
+
+        
+    })
+
 })
