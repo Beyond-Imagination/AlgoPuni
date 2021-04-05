@@ -1,11 +1,10 @@
 import { Command } from 'commander';
 
 import Context from '../../lib/context';
-import log from '../../utils/log';
 import {errorHandler} from '../../utils/error';
 
 const add = new Command('add');
-add.description('입력받은 이름으로 사용자를 생성합니다');
+add.description('입력받은 이름으로 사용자를 생성합니다.');
 add.arguments('[userID]')
 add.action(async (userID) => {
     try {

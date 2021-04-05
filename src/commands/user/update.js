@@ -2,12 +2,11 @@ import { Command } from 'commander';
 
 import Context from '../../lib/context';
 import Problem from '../../lib/problem';
-import log from '../../utils/log'
 import {errorHandler} from '../../utils/error';
 
 const update = new Command('update');
 update.arguments('[newUserID]')
-update.description('현재의 사용자 이름을 입력받은 이름으로 수정합니다');
+update.description('현재의 사용자 이름을 입력받은 이름으로 수정합니다.');
 update.action(async(newUserID) => {
     try {
         const context = new Context();

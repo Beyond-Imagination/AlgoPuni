@@ -6,7 +6,7 @@ import {errorHandler, ErrorNoArchivedProblem} from '../../utils/error'
 
 const unarchive = new Command('unarchive');
 unarchive.arguments('<problemNumbers...>');
-unarchive.description('다 풀어서 따로 저장해둔 문제를 다시 불러옵니다', {
+unarchive.description('다 풀어서 따로 저장해둔 문제를 다시 불러옵니다.', {
     problemNumbers : '아카이빙을 해제할 문제 번호들'
 });
 unarchive.action(async (problemNumbers) => {
