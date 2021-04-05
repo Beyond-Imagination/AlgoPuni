@@ -1,6 +1,6 @@
 {
     "name": "@beyond_imagination/algopuni",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "main": "src/index.js",
     "author": "laggu <laggu91@gmail.com>",
     "license": "MIT",
