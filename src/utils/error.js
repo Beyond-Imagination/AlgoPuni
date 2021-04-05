@@ -1,4 +1,3 @@
-import { createFsFromVolume } from 'memfs';
 import util from 'util';
 
 import log from './log';
