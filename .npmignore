@@ -1,0 +1,8 @@
+.githooks
+.space.kts
+.algopuni/*
+problems/*
+
+src/*
+test/*
+node_modules
