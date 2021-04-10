@@ -56,6 +56,8 @@ AlgoPuni 실행에 필요한 사항
 ### algopuni problem unarchive <problemNumber...>
 따로 저장한 문제를 다시 불러옵니다.
 
-### algopuni this-week set
+### algopuni thisweek set <problemNumber...>
+이번 주 문제를 설정합니다.
 
-### algopuni this-week print
+### algopuni thisweek print
+이번 주 문제 목록을 출력합니다.
