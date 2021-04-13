@@ -121,4 +121,12 @@ export default class Problem {
 
         this.changeFileName(this.getProblemPath(true), this.getProblemPath(false));
     }
+
+    // dead line 부분 이슈 처리
+    // setDeadline(){
+    //     const date = new Date();
+    //     let info = this.getInfo();        
+    //     info.deadline = date.toLocaleString();
+    //     this.saveProblemInfo(info);
+    // }
 }
