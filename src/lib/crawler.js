@@ -67,7 +67,7 @@ export default class Crawler {
     async getDescription(page) {
         const selector = "#tour2 > div"
         let description = await page.$eval(selector, element => element.innerHTML);
-        return description;
+        return description.trim();
     }
 
     async getInitalCode(page) {
