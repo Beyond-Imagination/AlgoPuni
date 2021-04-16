@@ -39,6 +39,24 @@ export default class User {
         return response.value;
     }
 
+    async askProgrammersAccount() {
+        const response = await prompts([
+            {
+                type: 'text',
+                name: 'email',
+                message: '프로그래머스 계정 아이디를 입력해주세요(email)'
+            },
+            {
+                type: 'text',
+                name: 'password',
+                message: '프로그래머스 계정 비밀번호를 입력해주세요'
+            }
+        ]);
+        this.programmers.email = response.email;
+        this.programmers.password = response.password;
+        return response;
+    }
+
     read() {
         const user = readJSON(this.path);
         Object.assign(this, user);
