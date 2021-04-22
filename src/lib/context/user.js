@@ -25,7 +25,6 @@ export default class User {
         } else {
             this.userID = userID;
         }
-
         this.write();
     }
 
@@ -33,7 +32,7 @@ export default class User {
         const response = await prompts({
             type: 'text',
             name: 'value',
-            message: 'Input your ID'
+            message: 'ID를 입력해주세요.'
         });
         this.userID = response.value;
         return response.value;

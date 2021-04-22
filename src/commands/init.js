@@ -1,11 +1,10 @@
 import { Command } from 'commander'
 
 import Context from '../lib/context';
-import log from '../utils/log'
 import {errorHandler} from '../utils/error';
 
 const init = new Command('init');
-init.description('init command description')
+init.description('알고푸니 repository 를 생성합니다.')
 init.action(async ()=>{
     try {
         const context = new Context('.');
